@@ -1,4 +1,4 @@
-package database.Classes;
+package databases.Classes;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,6 @@ public class Project {
         setName(name);
         setLocation(location);
         setNumber(number);
-        setManager(manager);
         employees = new ArrayList<Employee>();
     }
 
@@ -46,5 +45,6 @@ public class Project {
     public void addEmployee(Employee e) {
         employees.add(e);
     }
+
 
 }
