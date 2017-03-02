@@ -1,4 +1,4 @@
-package databases.Classes;
+package database.Classes;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
-package databases.Classes;
+package database.Classes;
 
-import databases.DataStructures.Date;
+import database.DataStructures.Date;
 
 /**
  * Created by Blake on 3/2/2017.
