@@ -1,4 +1,4 @@
-package database.DataStructures;
+package databases.DataStructures;
 
 /**
  * Created by Kevin on 3/2/2017.
