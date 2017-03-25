@@ -4,7 +4,7 @@ package database.DataStructures;
  * Created by Kevin on 3/2/2017.
  */
 public class Date {
-    private String suppliedDate;
+    private String date;
     private String day = "";
     private String month = "";
     private String year = "";
@@ -23,19 +23,15 @@ public class Date {
 
     }
 
-    public String getSuppliedDate() {
-        return suppliedDate;
-    }
-
-    public void setSuppliedDate(String suppliedDate) {
-        this.suppliedDate = suppliedDate;
+    public String getDate() {
+        return date;
     }
 
     public String getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    private void setDay(String day) {
         this.day = day;
     }
 
@@ -43,7 +39,7 @@ public class Date {
         return month;
     }
 
-    public void setMonth(String month) {
+    private void setMonth(String month) {
         this.month = month;
     }
 
@@ -51,7 +47,7 @@ public class Date {
         return year;
     }
 
-    public void setYear(String year) {
+    private void setYear(String year) {
         this.year = year;
     }
 }
