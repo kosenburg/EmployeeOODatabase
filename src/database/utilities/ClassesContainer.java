@@ -8,29 +8,39 @@ import java.util.ArrayList;
  * Created by Kevin on 3/25/2017.
  */
 public class ClassesContainer {
-    private ArrayList<Employee> employees;
-    private ArrayList<Dependent> dependents;
-    private ArrayList<Department> departments;
-    private ArrayList<Project> projects;
+    private static ArrayList<DatabaseClass> employees = new ArrayList<>();
+    private static ArrayList<DatabaseClass> dependents = new ArrayList<>();
+    private static ArrayList<DatabaseClass> departments = new ArrayList<>();
+    private static ArrayList<DatabaseClass> projects = new ArrayList<>();
 
-    public ClassesContainer() {
-        employees = new ArrayList<>();
-        departments = new ArrayList<>();
-        dependents = new ArrayList<>();
-        projects = new ArrayList<>();
-    };
 
-    public void addClass(DatabaseClass classToAdd) {
+    public static void addClass(DatabaseClass classToAdd) {
+        System.out.println("Adding object of " + classToAdd.getClass());
         if (classToAdd instanceof Department) {
-            departments.add((Department) classToAdd);
+            departments.add(classToAdd);
         } else if (classToAdd instanceof Dependent) {
-            dependents.add((Dependent) classToAdd);
+            dependents.add(classToAdd);
         } else if (classToAdd instanceof  Employee) {
-            employees.add((Employee) classToAdd);
+            employees.add(classToAdd);
         } else if (classToAdd instanceof Project) {
-            projects.add((Project) classToAdd);
+            projects.add(classToAdd);
         } else {
             throw new IllegalArgumentException();
+        }
+    }
+
+    public static ArrayList<DatabaseClass> getClassList(String type) {
+        switch (type.toLowerCase()) {
+            case "department":
+                return departments;
+            case "dependent":
+                return dependents;
+            case "employee":
+                return employees;
+            case "project":
+                return projects;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 

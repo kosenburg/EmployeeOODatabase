@@ -5,11 +5,11 @@ import database.DataStructures.Date;
 import java.util.ArrayList;
 
 public class Employee implements DatabaseClass{
-private String fName;
-private String mInit;
-private String lName;
+private String firstName;
+private String middleInitial;
+private String lastName;
 private String ssn;
-private Date bDate;
+private Date birthDate;
 private String address;
 private char sex;
 private int salary;
@@ -18,10 +18,10 @@ private ArrayList<Project> projects;
 private Department department;
 private ArrayList<Dependent> dependents;
 
-    public Employee(String firstName, String lastName, String mInit, String ssn, char sex){
+    public Employee(String firstName, String lastName, String middleInitial, String ssn, char sex){
         setFirstName(firstName);
         setLastName(lastName);
-        setMidInit(mInit);
+        setMidInit(middleInitial);
         setSsn(ssn);
         setSex(sex);
         setSupervisees();
@@ -48,29 +48,29 @@ private ArrayList<Dependent> dependents;
     }
 
     public String getFirstName(){
-    return fName;
+    return firstName;
     }
 
     private void setFirstName(String fName){
-    this.fName = fName;
+    this.firstName = fName;
     }
 
 
     public String getMidInit(){
-    return mInit;
+    return middleInitial;
     }
 
     private void setMidInit(String mInit){
-    this.mInit = mInit;
+    this.middleInitial = mInit;
     }
 
 
     public String getLastName(){
-    return lName;
+    return lastName;
     }
 
     public void setLastName(String lName){
-    this.lName = lName;
+    this.lastName = lName;
     }
 
     public String getSsn(){
@@ -82,11 +82,11 @@ private ArrayList<Dependent> dependents;
     }
 
     public Date getBirthDate(){
-    return bDate;
+    return birthDate;
     }
 
     public void setBirthDate(Date bDate){
-    this.bDate = bDate;
+    this.birthDate = bDate;
     }
 
     public String getAddress(){

@@ -11,7 +11,8 @@ public class Project implements DatabaseClass {
     private String name;
     private ArrayList<Employee> employees;
 
-    public Project(String location, int number, String name) {
+
+    public Project(String name, int number, String location) {
         setName(name);
         setLocation(location);
         setNumber(number);

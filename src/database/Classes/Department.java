@@ -6,13 +6,15 @@ import java.util.ArrayList;
 
 
 public class Department implements DatabaseClass {
-private String deptName;
-private int deptNumber;
+private String name;
+private int number;
 private Employee manager;
 private Date managerStartDate;
 private String location;
 private ArrayList<Project> projects;
 private ArrayList<Employee> employees;
+
+
 
 	public Department(String name, int number, String location){
 		setDeptName(name);
@@ -43,20 +45,20 @@ private ArrayList<Employee> employees;
 	}
 
 	public String getDeptName(){
-	return deptName;
+	return name;
 	}
 
 	public void setDeptName(String deptName){
-	this.deptName = deptName;
+	this.name = deptName;
 	}
 
 
 	public int getDeptNumber(){
-	return deptNumber;
+	return number;
 	}
 
 	public void setDeptNumber(int deptNumber){
-	this.deptNumber = deptNumber;
+	this.number = deptNumber;
 	}
 
 	public String getManagerSsn(){

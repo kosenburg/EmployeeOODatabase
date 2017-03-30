@@ -25,9 +25,9 @@ public class Select implements Command{
     }
 
     @Override
-    public void setParameters(String... parameters) {
-        searchKey = parameters[0];
-        fromKey = parameters[1];
+    public void setParameters(String[] fields, String[] types, String[] conditions) {
 
     }
+
+
 }
