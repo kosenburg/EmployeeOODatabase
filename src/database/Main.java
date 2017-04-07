@@ -5,7 +5,6 @@ import database.Commands.Add;
 import database.Commands.Command;
 import database.utilities.ClassesContainer;
 import database.utilities.Parser;
-import database.utilities.XMLSax;
 import org.jdom2.JDOMException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,7 +17,6 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, JDOMException, IOException, IllegalAccessException, TransformerException {
-        Thread xmlThread = new XMLSax();
 
 
 
@@ -27,7 +25,6 @@ public class Main {
         cmd.executeCommand();
         cmd.returnResults();
 
-        xmlThread.start();
 
 
         String query3 = "Add Project With location=there,number=1,name=NewProject";

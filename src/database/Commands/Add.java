@@ -4,27 +4,29 @@ import database.Classes.DatabaseClass;
 import database.utilities.ClassesContainer;
 import database.utilities.FieldContainer;
 import database.utilities.ObjectFactory;
-import database.utilities.XMLSax;
+import database.utilities.XMLWriter;
 import org.jdom2.JDOMException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static database.utilities.XMLSax.writeXML;
 
 
 public class Add implements Command {
     private String type;
     private HashMap<String,String> attributes;
+    private XMLWriter writer;
 
     public Add(String[] fields, String type) {
         System.out.println("Creating Add command...");
         setAttributes();
         setType(type);
         collectFieldData(fields);
+        writer = new XMLWriter(type,attributes);
     }
 
     private void setAttributes() {
@@ -32,16 +34,32 @@ public class Add implements Command {
     }
 
     @Override
-    public void executeCommand() {
+    public void executeCommand() throws JDOMException, IOException, IllegalAccessException {
         System.out.println("Command executed");
+
         DatabaseClass db = ObjectFactory.getObject(type,attributes);
 
-        writeXML(type,attributes);
+        //run after Class Object created
+        writer.run();
 
+        Class classname = db.getClass();
+
+        /* Get the class values
+
+        Field[] fields = classname.getDeclaredFields();
+        for(Field field : fields) {
+            field.setAccessible(true);
+            String name = field.getName();
+            Object value = field.get(db);
+            System.out.println(value);
+        }
+  */
         //System.out.println("Object created: " + db);
         if (db !=null) {
             ClassesContainer.addClass(db);
         }
+
+
 
 
     }

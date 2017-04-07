@@ -4,4 +4,16 @@
     <name>ADepartment</name>
     <location>here</location>
   </department>
+  <department number="2">
+    <name>ADepartment</name>
+    <location>here</location>
+  </department>
+  <department number="2">
+    <name>ADepartment</name>
+    <location>here</location>
+  </department>
+  <department number="2">
+    <name>ADepartment</name>
+    <location>here</location>
+  </department>
 </Department>

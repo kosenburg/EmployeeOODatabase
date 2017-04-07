@@ -4,4 +4,48 @@
     <name>AProject</name>
     <location>here</location>
   </project>
+  <project number="1">
+    <name>NewProject</name>
+    <location>there</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="1">
+    <name>NewProject</name>
+    <location>there</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="1">
+    <name>NewProject</name>
+    <location>there</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="1">
+    <name>NewProject</name>
+    <location>there</location>
+  </project>
+  <project number="1">
+    <name>NewProject</name>
+    <location>there</location>
+  </project>
 </Project>

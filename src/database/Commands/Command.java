@@ -11,7 +11,7 @@ import java.io.IOException;
  * Created by Kevin on 3/25/2017.
  */
 public interface Command {
-    void executeCommand();
+    void executeCommand() throws JDOMException, IOException, IllegalAccessException;
     void returnResults();
     void setParameters(String[] fields, String[] types, String[] conditions);
 }
