@@ -4,6 +4,7 @@ import database.Classes.*;
 
 import java.util.ArrayList;
 
+
 /**
  * Created by Kevin on 3/25/2017.
  */
@@ -27,6 +28,8 @@ public class ClassesContainer {
         } else {
             throw new IllegalArgumentException();
         }
+
+
     }
 
     public static ArrayList<DatabaseClass> getClassList(String type) {

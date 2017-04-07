@@ -4,8 +4,17 @@ import database.Classes.DatabaseClass;
 import database.utilities.ClassesContainer;
 import database.utilities.FieldContainer;
 import database.utilities.ObjectFactory;
+import database.utilities.XMLSax;
+import org.jdom2.JDOMException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static database.utilities.XMLSax.writeXML;
+
 
 public class Add implements Command {
     private String type;
@@ -26,10 +35,15 @@ public class Add implements Command {
     public void executeCommand() {
         System.out.println("Command executed");
         DatabaseClass db = ObjectFactory.getObject(type,attributes);
+
+        writeXML(type,attributes);
+
         //System.out.println("Object created: " + db);
         if (db !=null) {
             ClassesContainer.addClass(db);
         }
+
+
     }
 
     @Override
