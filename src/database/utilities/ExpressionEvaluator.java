@@ -10,13 +10,14 @@ import java.util.Stack;
 public class ExpressionEvaluator {
     private ExpressionTree tree;
     private String postFixExpression;
+    private BinaryNode root;
 
-    public ExpressionEvaluator(){//String expression) {
-        //convertToPostFix(expression);
+    public ExpressionEvaluator(String expression) {
+        convertToPostFix(expression);
         //setPostFixExpression(postFixExpression);
     }
 
-    public String convertToPostFix(String expression) {
+    private void convertToPostFix(String expression) {
         Stack<String> localStack = new Stack<>();
         postFixExpression = "";
 
@@ -36,7 +37,7 @@ public class ExpressionEvaluator {
 
                             } else {
                 //                System.out.println("popping " + operator);
-                                postFixExpression += operator;
+                                postFixExpression += operator + " ";
                             }
                         }
                         continue;
@@ -47,14 +48,14 @@ public class ExpressionEvaluator {
                         while (localStack.size() > 0 && precedence < getPrecedence(localStack.peek())) {
                             String local = localStack.pop();
                     //        System.out.println("Popping " + local);
-                            postFixExpression += local;
+                            postFixExpression += local + " ";
                         }
                     }
               //      System.out.println("Pushing " + part);
                     localStack.push(part);
                 }
             } else {
-                postFixExpression += part;
+                postFixExpression += part + " ";
             }
         }
 
@@ -63,11 +64,47 @@ public class ExpressionEvaluator {
             postFixExpression += localStack.pop();
         }
 
-        return postFixExpression;
     }
 
     public boolean isMatch(DatabaseClass object) {
         return false;
+    }
+
+    public void createTree() {
+        Stack<BinaryNode> valueStack = new Stack<>();
+        BinaryNode operator = null;
+        System.out.println(postFixExpression);
+        for (String thing:postFixExpression.split(" ")) {
+            System.out.println("looking at " + thing);
+            if (getPrecedence(thing) != -1) {
+                //System.out.println("Operator: " + thing);
+                BinaryNode[] nodes = new BinaryNode[2];
+                for (int i = 0; i < 2; i++) {
+                    nodes[i] = valueStack.pop();
+                }
+                operator = new BinaryNode(thing, nodes[1],nodes[0]);
+                valueStack.push(operator);
+            } else {
+                //System.out.println("Value: " + thing);
+                valueStack.push(new BinaryNode(thing, null, null));
+            }
+        }
+        root = operator;
+        inorderTraversal(root);
+    }
+
+    private BinaryNode inorderTraversal(BinaryNode currentNode) {
+        if (currentNode.getLeft() != null) {
+            currentNode.setLeft(inorderTraversal(currentNode.getLeft()));
+        }
+
+        System.out.print(currentNode.getValue());
+
+        if (currentNode.getRight() != null) {
+            currentNode.setRight(inorderTraversal(currentNode.getRight()));
+        }
+
+        return currentNode;
     }
 
     public static int getPrecedence(String operator) {
@@ -93,4 +130,5 @@ public class ExpressionEvaluator {
     public void setPostFixExpression(String postFixExpression) {
         this.postFixExpression = postFixExpression;
     }
+
 }
