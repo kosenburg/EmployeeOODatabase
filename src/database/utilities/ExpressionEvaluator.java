@@ -67,6 +67,14 @@ public class ExpressionEvaluator {
     }
 
     public boolean isMatch(DatabaseClass object) {
+        // getCorrectList, for multiple objects can store in hashmap by name?
+        // for each key in the list map
+        //  get the list
+        //      for chosen list pick a value
+        //          run through tree with one from every other list and keep cycling
+        // start evaluation
+        // before each eval, check to make sure the name is a field
+        // if not throw exception
         return false;
     }
 
