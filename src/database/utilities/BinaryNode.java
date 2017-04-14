@@ -2,8 +2,8 @@ package database.utilities;
 
 import database.Classes.DatabaseClass;
 
-import java.net.BindException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Kevin on 4/11/2017.
@@ -12,9 +12,10 @@ public class BinaryNode implements Comparable{
     private String value;
     private BinaryNode left;
     private BinaryNode right;
-    private ArrayList<DatabaseClass> classes;
+    private HashSet<DatabaseClass> records;
 
     public BinaryNode(String value, BinaryNode left, BinaryNode right) {
+        records = new HashSet<>();
         setValue(value);
         setLeft(left);
         setRight(right);
@@ -48,16 +49,22 @@ public class BinaryNode implements Comparable{
         this.value = value;
     }
 
-    public ArrayList<DatabaseClass> getClasses() {
-        return classes;
+    public HashSet<DatabaseClass> getRecords() {
+        return records;
     }
 
-    public void setClasses(ArrayList<DatabaseClass> classes) {
-        this.classes = classes;
+    public void setRecords(HashSet<DatabaseClass> records) {
+        this.records = records;
+    }
+
+    public void setRecords(ArrayList<DatabaseClass> records) {
+        for (DatabaseClass dbClass: records) {
+            records.add(dbClass);
+        }
     }
 
     public void addClass(DatabaseClass aClass) {
-        this.classes.add(aClass);
+        this.records.add(aClass);
     }
 
     public void setClasses(String name) {

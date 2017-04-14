@@ -2,6 +2,7 @@ package database.utilities;
 
 import database.Classes.DatabaseClass;
 
+import javax.lang.model.element.ElementVisitor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class ExpressionEvaluator {
         return currentNode;
     }
 
-    private BinaryNode inorderEval(BinaryNode currentNode) {
+    private BinaryNode inorderEval(BinaryNode currentNode) throws InvocationTargetException, IllegalAccessException {
         BinaryNode left = null, right = null, result = null;
 
         System.out.println("Current node is: " + currentNode.getValue());
@@ -135,98 +136,70 @@ public class ExpressionEvaluator {
             left = inorderEval(currentNode.getLeft());
         }
 
-
-        //System.out.print(currentNode.getValue());
-
         if (currentNode.getRight() != null) {
             System.out.println("Going to right child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
             right = inorderEval((currentNode.getRight()));
         }
 
-        if (currentNode.getLeft() != null && currentNode.getRight() != null) {
-            // calculate equation part
-            // result = evaluate(left, currentNode.getValue(), right);
-            System.out.println("Evaluating for children of " + currentNode.getValue());
-            currentNode.setClasses(test(left,currentNode,right));
-        } else {
-            if (isList(currentNode.getValue())) {
-                System.out.println("Node is a leaf and a class.");
-                String[] parts = currentNode.getValue().split("\\.");
-                System.out.println("Adding to nodes classes list");
-                currentNode.setClasses(ClassesContainer.getClassList(parts[0]));
+        if (currentNode.getLeft() == null && currentNode.getRight() == null) {
+            String[] pair = currentNode.getValue().split("\\.");
+            if (pair.length > 1) {
+                currentNode.setRecords(ClassesContainer.getClassList(pair[0]));
             }
         }
+
+        if (currentNode.getLeft() != null && currentNode.getRight() != null) {
+            System.out.println("Evaluating for children of " + currentNode.getValue());
+            currentNode = evaluate(left, currentNode, right);
+        }
+
         return currentNode;
     }
 
+    // TODO grab the methods before passing
+    private BinaryNode evaluate(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
+        if (left.getRecords() != null && right.getRecords() != null) {
+            for (DatabaseClass rightRecord: right.getRecords()) {
+                for (DatabaseClass leftRecord: left.getRecords()) {
+                    findResults(getMethod(left.getValue(), leftRecord), currentNode.getValue(), getMethod(right.getValue(), rightRecord));
+                }
 
-    private ArrayList<DatabaseClass> test(BinaryNode left, BinaryNode operator, BinaryNode right) {
-        ArrayList<DatabaseClass> results = null;
-        if ((left.getClasses() != null) && (right.getClasses()) != null) {
-            System.out.println("Not implemented");
-            //results = evaluate(left, operator.getValue(), right);
-        } else if (left.getClasses() != null) {
-            results = evaluate(left, operator.getValue(),right.getValue());
-        } else if (right.getClasses() != null) {
-            System.out.println("Not implemented");
-            //results = evaluate(left.getValue(), operator.getValue(), right.getClasses());
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return results;
-    }
-
-
-    private ArrayList<DatabaseClass> evaluate(BinaryNode left, String value, String value1) {
-        ArrayList<DatabaseClass> results = new ArrayList<>();
-        String[] parts = left.getValue().split("\\.");
-        System.out.println("Evaluating with class: " + parts[0] + " for method: " + parts[1]);
-        for (DatabaseClass dbClass: left.getClasses()) {
-            boolean result = solve(parts[1], dbClass, value, value1);
-            if (result) {
-                System.out.println("Result is a match!");
-                results.add(dbClass);
+            }
+        } else if (left.getRecords() != null && right.getRecords() == null) {
+            for (DatabaseClass record: left.getRecords()) {
+                findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
+            }
+        } else if (left.getRecords() == null) {
+            for (DatabaseClass rightRecord: right.getRecords()) {
+                findResults(left.getValue(), currentNode.getValue(), rightRecord);
             }
         }
-        return results;
+
+        return null;
     }
 
-    private boolean solve(String methodName, DatabaseClass dbClass, String operator, String operand) {
-        try {
-            System.out.println("Getting method name");
-            Method method = getMethod(methodName, dbClass);
-            System.out.println("Solving..");
-            return findResults(method.invoke(dbClass), operator, operand);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            System.out.println("An error occured while invoking selected method due to: " + e.getMessage());
+    private String getAttributeName(String dotExpression) {
+        String[] temp = dotExpression.split("\\.");
+
+        return temp[1];
+    }
+
+
+    private boolean findResults(Object operand1, String operator, Object operand2) {
+        if ((operand1 instanceof String) && (operand2 instanceof String)) {
+            Evaluator.evaluate((String) operand1, operator, (String) operand2);
+        } else if ((operand1 instanceof ArrayList<?>) && (operand2 instanceof ArrayList<?>)) {
+            Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (ArrayList<DatabaseClass>) operand2);
+        } else if (operand1 instanceof ArrayList<?>) {
+            Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (String) operand2);
+        } else {
+            Evaluator.evaluate((String) operand1, operator, (ArrayList<DatabaseClass>) operand2);
         }
-        return false;
-    }
 
-    private boolean findResults(Object invoke, String operator, String operand2) {
-        String operand1 = (String) invoke;
-        System.out.println("Evaluating: " + operand1 + operator + operand2);
-        switch (operator) {
-            case "<":
-                return Integer.parseInt(operand1) < Integer.parseInt(operand2);
-            case ">":
-                return Integer.parseInt(operand1) > Integer.parseInt(operand2);
-            case "&&":
-                return getBool(operand1) && getBool(operand2);
-            case "||":
-                return getBool(operand1) || getBool(operand2);
-            case "=":
-                return operand1.equals(operand2);
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    private static boolean getBool(String operand2) {
-        return operand2.equals("true");
     }
 
     private Method getMethod(String methodName, DatabaseClass dbClass) {
+        methodName = getAttributeName(methodName);
         try {
             for (Method method : dbClass.getClass().getMethods()) {
                 if (method.getName().contains("get") && method.getName().contains(methodName)) {

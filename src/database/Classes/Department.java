@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Department implements DatabaseClass {
 private String name;
-private int number;
+private String number;
 private Employee manager;
 private Date managerStartDate;
 private String location;
@@ -16,7 +16,7 @@ private ArrayList<Employee> employees;
 
 
 
-	public Department(String name, int number, String location){
+	public Department(String name, String number, String location){
 		setDeptName(name);
 		setDeptNumber(number);
 		setDeptLocation(location);
@@ -53,11 +53,11 @@ private ArrayList<Employee> employees;
 	}
 
 
-	public int getDeptNumber(){
+	public String getDeptNumber(){
 	return number;
 	}
 
-	public void setDeptNumber(int deptNumber){
+	public void setDeptNumber(String deptNumber){
 	this.number = deptNumber;
 	}
 
