@@ -27,6 +27,7 @@ public class ObjectFactory {
         }
     }
 
+
     private static DatabaseClass createNewDepartment(HashMap<String, String> attributes) {
         return new Department(attributes.get("name"), Integer.parseInt(attributes.get("number")),attributes.get("location"));
     }

@@ -20,6 +20,10 @@ public class Dependent implements DatabaseClass{
 
     }
 
+    public Dependent() {
+
+    }
+
     public Dependent(String name, String sex, Employee relationship) {
         this(name, new Date("##/##/####"),' ',relationship);
     }

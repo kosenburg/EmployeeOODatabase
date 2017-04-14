@@ -1,12 +1,18 @@
 package database.utilities;
 
+import database.Classes.DatabaseClass;
+
+import java.net.BindException;
+import java.util.ArrayList;
+
 /**
- * Created by Kevin on 4/10/2017.
+ * Created by Kevin on 4/11/2017.
  */
-public class BinaryNode implements Comparable {
+public class BinaryNode implements Comparable{
     private String value;
     private BinaryNode left;
     private BinaryNode right;
+    private ArrayList<DatabaseClass> classes;
 
     public BinaryNode(String value, BinaryNode left, BinaryNode right) {
         setValue(value);
@@ -15,7 +21,23 @@ public class BinaryNode implements Comparable {
     }
 
     public BinaryNode(String value) {
-        this(value, null, null);
+        this(value,null,null);
+    }
+
+    public BinaryNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(BinaryNode left) {
+        this.left = left;
+    }
+
+    public BinaryNode getRight() {
+        return right;
+    }
+
+    public void setRight(BinaryNode right) {
+        this.right = right;
     }
 
     public String getValue() {
@@ -26,20 +48,19 @@ public class BinaryNode implements Comparable {
         this.value = value;
     }
 
-    public void setLeft(BinaryNode left) {
-        this.left = left;
+    public ArrayList<DatabaseClass> getClasses() {
+        return classes;
     }
 
-    public BinaryNode getLeft() {
-        return left;
+    public void setClasses(ArrayList<DatabaseClass> classes) {
+        this.classes = classes;
     }
 
-    public BinaryNode getRight() {
-        return right;
+    public void addClass(DatabaseClass aClass) {
+        this.classes.add(aClass);
     }
 
-    public void setRight(BinaryNode right) {
-        this.right = right;
+    public void setClasses(String name) {
     }
 
     @Override

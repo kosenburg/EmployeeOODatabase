@@ -2,6 +2,9 @@ package database.utilities;
 
 import database.Classes.DatabaseClass;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -11,6 +14,7 @@ public class ExpressionEvaluator {
     private ExpressionTree tree;
     private String postFixExpression;
     private BinaryNode root;
+    private ArrayList<DatabaseClass> results;
 
     public ExpressionEvaluator(String expression) {
         convertToPostFix(expression);
@@ -20,6 +24,7 @@ public class ExpressionEvaluator {
     private void convertToPostFix(String expression) {
         Stack<String> localStack = new Stack<>();
         postFixExpression = "";
+        System.out.println("Converting to postfix...");
 
         for (String part: expression.split(" ")) {
             //System.out.println("Working on part: " + part);
@@ -61,12 +66,15 @@ public class ExpressionEvaluator {
 
         while (localStack.size() > 0) {
             //System.out.println("Expression: " + postFixExpression);
-            postFixExpression += localStack.pop();
+            postFixExpression += localStack.pop() + " ";
         }
 
     }
 
     public boolean isMatch(DatabaseClass object) {
+
+
+
         // getCorrectList, for multiple objects can store in hashmap by name?
         // for each key in the list map
         //  get the list
@@ -79,6 +87,7 @@ public class ExpressionEvaluator {
     }
 
     public void createTree() {
+        System.out.println("Creating tree...");
         Stack<BinaryNode> valueStack = new Stack<>();
         BinaryNode operator = null;
         System.out.println(postFixExpression);
@@ -98,7 +107,9 @@ public class ExpressionEvaluator {
             }
         }
         root = operator;
-        inorderTraversal(root);
+        //inorderTraversal(root);
+        System.out.println("Beginning evalulation..");
+        inorderEval(root);
     }
 
     private BinaryNode inorderTraversal(BinaryNode currentNode) {
@@ -115,23 +126,150 @@ public class ExpressionEvaluator {
         return currentNode;
     }
 
-    public static int getPrecedence(String operator) {
-        if (operator.equals("(") || operator.equals(")")) {
-            return 1;
-        } else if (operator.equals(">") || operator.equals("<") || operator.equals(">=") || operator.equals("<=")) {
-            return 2;
-        } else if (operator.equals("*") || operator.equals("/")) {
-            return 3;
-        } else if (operator.equals("+") || operator.equals("-")) {
-            return 4;
-        } else if (operator.equals("=") || operator.equals("")) {
-            return 5;
-        } else if (operator.equals("&&")) {
-            return 6;
-        } else if (operator.equals("||")) {
-            return 7;
+    private BinaryNode inorderEval(BinaryNode currentNode) {
+        BinaryNode left = null, right = null, result = null;
+
+        System.out.println("Current node is: " + currentNode.getValue());
+        if (currentNode.getLeft() != null) {
+            System.out.println("Going to left child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
+            left = inorderEval(currentNode.getLeft());
+        }
+
+
+        //System.out.print(currentNode.getValue());
+
+        if (currentNode.getRight() != null) {
+            System.out.println("Going to right child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
+            right = inorderEval((currentNode.getRight()));
+        }
+
+        if (currentNode.getLeft() != null && currentNode.getRight() != null) {
+            // calculate equation part
+            // result = evaluate(left, currentNode.getValue(), right);
+            System.out.println("Evaluating for children of " + currentNode.getValue());
+            currentNode.setClasses(test(left,currentNode,right));
         } else {
-            return -1;
+            if (isList(currentNode.getValue())) {
+                System.out.println("Node is a leaf and a class.");
+                String[] parts = currentNode.getValue().split("\\.");
+                System.out.println("Adding to nodes classes list");
+                currentNode.setClasses(ClassesContainer.getClassList(parts[0]));
+            }
+        }
+        return currentNode;
+    }
+
+
+    private ArrayList<DatabaseClass> test(BinaryNode left, BinaryNode operator, BinaryNode right) {
+        ArrayList<DatabaseClass> results = null;
+        if ((left.getClasses() != null) && (right.getClasses()) != null) {
+            System.out.println("Not implemented");
+            //results = evaluate(left, operator.getValue(), right);
+        } else if (left.getClasses() != null) {
+            results = evaluate(left, operator.getValue(),right.getValue());
+        } else if (right.getClasses() != null) {
+            System.out.println("Not implemented");
+            //results = evaluate(left.getValue(), operator.getValue(), right.getClasses());
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return results;
+    }
+
+
+    private ArrayList<DatabaseClass> evaluate(BinaryNode left, String value, String value1) {
+        ArrayList<DatabaseClass> results = new ArrayList<>();
+        String[] parts = left.getValue().split("\\.");
+        System.out.println("Evaluating with class: " + parts[0] + " for method: " + parts[1]);
+        for (DatabaseClass dbClass: left.getClasses()) {
+            boolean result = solve(parts[1], dbClass, value, value1);
+            if (result) {
+                System.out.println("Result is a match!");
+                results.add(dbClass);
+            }
+        }
+        return results;
+    }
+
+    private boolean solve(String methodName, DatabaseClass dbClass, String operator, String operand) {
+        try {
+            System.out.println("Getting method name");
+            Method method = getMethod(methodName, dbClass);
+            System.out.println("Solving..");
+            return findResults(method.invoke(dbClass), operator, operand);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            System.out.println("An error occured while invoking selected method due to: " + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean findResults(Object invoke, String operator, String operand2) {
+        String operand1 = (String) invoke;
+        System.out.println("Evaluating: " + operand1 + operator + operand2);
+        switch (operator) {
+            case "<":
+                return Integer.parseInt(operand1) < Integer.parseInt(operand2);
+            case ">":
+                return Integer.parseInt(operand1) > Integer.parseInt(operand2);
+            case "&&":
+                return getBool(operand1) && getBool(operand2);
+            case "||":
+                return getBool(operand1) || getBool(operand2);
+            case "=":
+                return operand1.equals(operand2);
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private static boolean getBool(String operand2) {
+        return operand2.equals("true");
+    }
+
+    private Method getMethod(String methodName, DatabaseClass dbClass) {
+        try {
+            for (Method method : dbClass.getClass().getMethods()) {
+                if (method.getName().contains("get") && method.getName().contains(methodName)) {
+                    return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            System.err.println("The method " + methodName + " does not exist for the class" + dbClass.getClass().getName());
+        }
+        return null;
+    }
+
+
+
+    private boolean isList(String pair) {
+        return (pair.contains("\\.") && (ClassesContainer.getClassList(pair.split("\\.")[0])) != null);
+    }
+
+    public static int getPrecedence(String operator) {
+        switch (operator) {
+            case "(":
+            case ")":
+                return 1;
+            case ">":
+            case "<":
+            case ">=":
+            case "<=":
+                return 2;
+            case "*":
+            case "/":
+                return 3;
+            case "+":
+            case "-":
+                return 4;
+            case "=":
+            case "":
+                return 5;
+            case "&&":
+                return 6;
+            case "||":
+                return 7;
+            default:
+                return -1;
         }
     }
 

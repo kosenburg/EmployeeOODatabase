@@ -29,6 +29,9 @@ private ArrayList<Dependent> dependents;
     }
 
 
+    public Employee() {
+
+    }
 
     public void addSupervisee(Employee employee) {
         supervisees.add(employee);

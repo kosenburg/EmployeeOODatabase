@@ -40,8 +40,12 @@ public class ClassesContainer {
             case "project":
                 return projects;
             default:
-                throw new IllegalArgumentException();
+                return null;
         }
+
+    }
+
+    public static void main(String[] args) {
 
     }
 

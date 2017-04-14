@@ -14,6 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         String query = "Add Project With location=here,number=2,name=AProject";
         Command cmd = Parser.getCommand(query);
         cmd.executeCommand();
