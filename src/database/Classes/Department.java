@@ -5,7 +5,7 @@ import database.DataStructures.Date;
 import java.util.ArrayList;
 
 
-public class Department implements DatabaseClass {
+public class Department extends DatabaseClass {
 private String name;
 private String number;
 private Employee manager;

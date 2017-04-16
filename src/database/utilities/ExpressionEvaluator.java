@@ -1,8 +1,9 @@
 package database.utilities;
 
-import database.Classes.DatabaseClass;
 
-import javax.lang.model.element.ElementVisitor;
+import database.Classes.DatabaseClass;
+import database.Classes.Dependent;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -17,23 +18,27 @@ public class ExpressionEvaluator {
     private BinaryNode root;
     private ArrayList<DatabaseClass> results;
 
+    public ExpressionEvaluator() {
+
+    }
+
     public ExpressionEvaluator(String expression) {
         convertToPostFix(expression);
         //setPostFixExpression(postFixExpression);
     }
 
-    private void convertToPostFix(String expression) {
+    public void convertToPostFix(String expression) {
         Stack<String> localStack = new Stack<>();
         postFixExpression = "";
-        System.out.println("Converting to postfix...");
+//        System.out.println("Converting to postfix...");
 
         for (String part: expression.split(" ")) {
-            //System.out.println("Working on part: " + part);
+  //          System.out.println("Working on part: " + part);
             int precedence = getPrecedence(part);
 
             if (precedence != -1) {
                 if (localStack.size() == 0) {
-                  //  System.out.println("pushing " + part);
+    //                System.out.println("pushing " + part);
                     localStack.push(part);
                 } else {
                     if (part.equals(")")) {
@@ -42,7 +47,7 @@ public class ExpressionEvaluator {
                             if (operator.equals("(") || operator.equals(")")) {
 
                             } else {
-                //                System.out.println("popping " + operator);
+      //                          System.out.println("popping " + operator);
                                 postFixExpression += operator + " ";
                             }
                         }
@@ -50,14 +55,14 @@ public class ExpressionEvaluator {
                     } else if (part.equals("(")) {
                         localStack.push(part);
                         continue;
-                    } else if (precedence < getPrecedence(localStack.peek())) {
-                        while (localStack.size() > 0 && precedence < getPrecedence(localStack.peek())) {
+                    } else if (precedence >= getPrecedence(localStack.peek())) {
+                        while (localStack.size() > 0 && precedence >= getPrecedence(localStack.peek())) {
                             String local = localStack.pop();
-                    //        System.out.println("Popping " + local);
+        //                    System.out.println("Popping " + local);
                             postFixExpression += local + " ";
                         }
                     }
-              //      System.out.println("Pushing " + part);
+          //          System.out.println("Pushing " + part);
                     localStack.push(part);
                 }
             } else {
@@ -70,6 +75,7 @@ public class ExpressionEvaluator {
             postFixExpression += localStack.pop() + " ";
         }
 
+        System.out.println(postFixExpression);
     }
 
     public boolean isMatch(DatabaseClass object) {
@@ -91,9 +97,9 @@ public class ExpressionEvaluator {
         System.out.println("Creating tree...");
         Stack<BinaryNode> valueStack = new Stack<>();
         BinaryNode operator = null;
-        System.out.println(postFixExpression);
+        //System.out.println(postFixExpression);
         for (String thing:postFixExpression.split(" ")) {
-            System.out.println("looking at " + thing);
+            //System.out.println("looking at " + thing);
             if (getPrecedence(thing) != -1) {
                 //System.out.println("Operator: " + thing);
                 BinaryNode[] nodes = new BinaryNode[2];
@@ -107,10 +113,19 @@ public class ExpressionEvaluator {
                 valueStack.push(new BinaryNode(thing, null, null));
             }
         }
+
         root = operator;
         //inorderTraversal(root);
         System.out.println("Beginning evalulation..");
-        inorderEval(root);
+        try {
+            BinaryNode node = inorderEval(root);
+            for (DatabaseClass dbClass: node.getRecords()) {
+                Dependent dependent = (Dependent) dbClass;
+                System.out.println(((Dependent) dbClass).getName());
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private BinaryNode inorderTraversal(BinaryNode currentNode) {
@@ -137,14 +152,15 @@ public class ExpressionEvaluator {
         }
 
         if (currentNode.getRight() != null) {
-            System.out.println("Going to right child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
+            System.out.println("Going to right child: " + currentNode.getRight().getValue() + " of " + currentNode.getValue());
             right = inorderEval((currentNode.getRight()));
         }
 
         if (currentNode.getLeft() == null && currentNode.getRight() == null) {
             String[] pair = currentNode.getValue().split("\\.");
             if (pair.length > 1) {
-                currentNode.setRecords(ClassesContainer.getClassList(pair[0]));
+                System.out.println("Adding the classes for " + pair[0]);
+                currentNode.addToRecords(ClassesContainer.getClassList(pair[0]));
             }
         }
 
@@ -158,24 +174,57 @@ public class ExpressionEvaluator {
 
     // TODO grab the methods before passing
     private BinaryNode evaluate(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
-        if (left.getRecords() != null && right.getRecords() != null) {
+        if (currentNode.getValue().equals("||")) {
+            for (DatabaseClass rightRecord: right.getRecords()) {
+                currentNode.addToRecords(rightRecord);
+            }
+
+            for (DatabaseClass leftRecord: left.getRecords()) {
+                currentNode.addToRecords(leftRecord);
+            }
+
+            return currentNode;
+        } else if (currentNode.getValue().equals("&&")) {
             for (DatabaseClass rightRecord: right.getRecords()) {
                 for (DatabaseClass leftRecord: left.getRecords()) {
-                    findResults(getMethod(left.getValue(), leftRecord), currentNode.getValue(), getMethod(right.getValue(), rightRecord));
+                    if (rightRecord.getOID() == leftRecord.getOID()) {
+                        currentNode.addToRecords(leftRecord);
+                    }
                 }
+            }
+            return currentNode;
+        }
 
-            }
-        } else if (left.getRecords() != null && right.getRecords() == null) {
-            for (DatabaseClass record: left.getRecords()) {
-                findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
-            }
-        } else if (left.getRecords() == null) {
+
+        if (left.getRecords().size() != 0 && right.getRecords().size() != 0) {
+            System.out.println("Hitting case: (list, val, list)");
             for (DatabaseClass rightRecord: right.getRecords()) {
-                findResults(left.getValue(), currentNode.getValue(), rightRecord);
+                for (DatabaseClass leftRecord: left.getRecords()) {
+                    boolean isMatch = findResults(getMethod(left.getValue(), leftRecord), currentNode.getValue(), getMethod(right.getValue(), rightRecord));
+                    if (isMatch) {
+                        System.out.println("Match found.");
+                        currentNode.addToRecords(leftRecord);
+                        currentNode.addToRecords(rightRecord);
+                    }
+                }
+            }
+        } else if (left.getRecords().size() != 0 && right.getRecords().size() == 0) {
+            System.out.println("Hitting case: (list, val, val)");
+            for (DatabaseClass record: left.getRecords()) {
+                boolean isMatch = findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
+                if (isMatch) {
+                    System.out.println("Match found.");
+                    currentNode.addToRecords(record);
+                }
+            }
+        } else if (left.getRecords().size() == 0) {
+            System.out.println("Hitting case: (val, val, list");
+            for (DatabaseClass rightRecord: right.getRecords()) {
+                boolean result = findResults(left.getValue(), currentNode.getValue(), rightRecord);
             }
         }
 
-        return null;
+        return currentNode;
     }
 
     private String getAttributeName(String dotExpression) {
@@ -186,28 +235,33 @@ public class ExpressionEvaluator {
 
 
     private boolean findResults(Object operand1, String operator, Object operand2) {
+
+
         if ((operand1 instanceof String) && (operand2 instanceof String)) {
-            Evaluator.evaluate((String) operand1, operator, (String) operand2);
+            return Evaluator.evaluate((String) operand1, operator, (String) operand2);
         } else if ((operand1 instanceof ArrayList<?>) && (operand2 instanceof ArrayList<?>)) {
-            Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (ArrayList<DatabaseClass>) operand2);
+            return Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (ArrayList<DatabaseClass>) operand2);
         } else if (operand1 instanceof ArrayList<?>) {
-            Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (String) operand2);
+            return Evaluator.evaluate((ArrayList<DatabaseClass>) operand1, operator, (String) operand2);
         } else {
-            Evaluator.evaluate((String) operand1, operator, (ArrayList<DatabaseClass>) operand2);
+            return Evaluator.evaluate((String) operand1, operator, (ArrayList<DatabaseClass>) operand2);
         }
 
     }
 
     private Method getMethod(String methodName, DatabaseClass dbClass) {
         methodName = getAttributeName(methodName);
+        System.out.println("Requested method " + methodName);
         try {
             for (Method method : dbClass.getClass().getMethods()) {
-                if (method.getName().contains("get") && method.getName().contains(methodName)) {
-                    return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                if (method.getName().contains("get") && method.getName().toLowerCase().contains(methodName)) {
+                    Method innerMethod = dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    System.out.println("Getting method " + innerMethod.getName());
+                    return innerMethod;
                 }
             }
         } catch (NoSuchMethodException e) {
-            System.err.println("The method " + methodName + " does not exist for the class" + dbClass.getClass().getName());
+            System.err.println("The method " + methodName + " does not exist for the class " + dbClass.getClass().getName());
         }
         return null;
     }
@@ -219,30 +273,22 @@ public class ExpressionEvaluator {
     }
 
     public static int getPrecedence(String operator) {
-        switch (operator) {
-            case "(":
-            case ")":
-                return 1;
-            case ">":
-            case "<":
-            case ">=":
-            case "<=":
-                return 2;
-            case "*":
-            case "/":
-                return 3;
-            case "+":
-            case "-":
-                return 4;
-            case "=":
-            case "":
-                return 5;
-            case "&&":
-                return 6;
-            case "||":
-                return 7;
-            default:
-                return -1;
+        if (operator.equals("(") || operator.equals(")")) {
+            return 1;
+        } else if (operator.equals(">") || operator.equals("<") || operator.equals(">=") || operator.equals("<=")) {
+            return 2;
+        } else if (operator.equals("*") || operator.equals("/")) {
+            return 3;
+        } else if (operator.equals("+") || operator.equals("-")) {
+            return 4;
+        } else if (operator.equals("=") || operator.equals("")) {
+            return 5;
+        } else if (operator.equals("&&")) {
+            return 6;
+        } else if (operator.equals("||")) {
+            return 7;
+        } else {
+            return -1;
         }
     }
 

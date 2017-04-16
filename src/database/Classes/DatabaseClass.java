@@ -1,7 +1,23 @@
 package database.Classes;
 
+import database.utilities.IdGenerator;
+
 /**
- * Created by Kevin on 3/25/2017.
+ * Created by Kevin on 4/15/2017.
  */
-public interface DatabaseClass {
+public class DatabaseClass {
+    private long oid;
+
+    public DatabaseClass() {
+        setOID();
+    }
+
+    private void setOID() {
+        oid = IdGenerator.getID();
+    }
+
+    public long getOID() {
+        return oid;
+    }
+
 }

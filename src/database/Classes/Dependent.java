@@ -6,7 +6,7 @@ import database.DataStructures.Date;
 /**
  * Created by Kevin on 3/2/2017.
  */
-public class Dependent implements DatabaseClass{
+public class Dependent extends DatabaseClass{
     private char sex;
     private String name;
     private Date birthDate;

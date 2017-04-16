@@ -4,7 +4,7 @@ import database.DataStructures.Date;
 
 import java.util.ArrayList;
 
-public class Employee implements DatabaseClass{
+public class Employee extends DatabaseClass {
 private String firstName;
 private String middleInitial;
 private String lastName;

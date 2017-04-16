@@ -57,17 +57,8 @@ public class BinaryNode implements Comparable{
         this.records = records;
     }
 
-    public void setRecords(ArrayList<DatabaseClass> records) {
-        for (DatabaseClass dbClass: records) {
-            records.add(dbClass);
-        }
-    }
-
-    public void addClass(DatabaseClass aClass) {
-        this.records.add(aClass);
-    }
-
-    public void setClasses(String name) {
+    public void addToRecords(ArrayList<DatabaseClass> records) {
+        this.records.addAll(records);
     }
 
     @Override
@@ -84,5 +75,9 @@ public class BinaryNode implements Comparable{
         } else {
             return  0;
         }
+    }
+
+    public void addToRecords(DatabaseClass record) {
+        records.add(record);
     }
 }

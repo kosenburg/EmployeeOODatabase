@@ -29,7 +29,7 @@ public class ObjectFactory {
 
 
     private static DatabaseClass createNewDepartment(HashMap<String, String> attributes) {
-        return new Department(attributes.get("name"), Integer.parseInt(attributes.get("number")),attributes.get("location"));
+        return new Department(attributes.get("name"), attributes.get("number"),attributes.get("location"));
     }
 
     private static DatabaseClass createNewProject(HashMap<String, String> attributes) {
