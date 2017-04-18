@@ -1,6 +1,5 @@
 package database.utilities;
 
-
 import database.Classes.DatabaseClass;
 import database.Classes.Dependent;
 
@@ -235,8 +234,6 @@ public class ExpressionEvaluator {
 
 
     private boolean findResults(Object operand1, String operator, Object operand2) {
-
-
         if ((operand1 instanceof String) && (operand2 instanceof String)) {
             return Evaluator.evaluate((String) operand1, operator, (String) operand2);
         } else if ((operand1 instanceof ArrayList<?>) && (operand2 instanceof ArrayList<?>)) {
