@@ -6,6 +6,7 @@ import database.Classes.Dependent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -27,6 +28,25 @@ public class ExpressionEvaluator {
         //setPostFixExpression(postFixExpression);
     }
 
+
+    private Stack<String> clearToClosingTag(Stack<String> stack) {
+        String operator;
+        while (!(operator = stack.pop()).equals("(")) {
+            if (!operator.equals("(") && !operator.equals(")")) {
+                postFixExpression += operator + " ";
+            }
+        }
+        return stack;
+    }
+
+    private Stack<String> clearToLowerPrec(Stack<String> stack, int precedence) {
+        while (stack.size() > 0 && precedence >= getPrecedence(stack.peek())) {
+            String local = stack.pop();
+            postFixExpression += local + " ";
+        }
+        return stack;
+    }
+
     public void convertToPostFix(String expression) {
         Stack<String> localStack = new Stack<>();
         postFixExpression = "";
@@ -35,32 +55,19 @@ public class ExpressionEvaluator {
         for (String part: expression.split(" ")) {
   //          System.out.println("Working on part: " + part);
             int precedence = getPrecedence(part);
-
             if (precedence != -1) {
                 if (localStack.size() == 0) {
     //                System.out.println("pushing " + part);
                     localStack.push(part);
                 } else {
                     if (part.equals(")")) {
-                        String operator;
-                        while (!(operator = localStack.pop()).equals("(")) {
-                            if (operator.equals("(") || operator.equals(")")) {
-
-                            } else {
-      //                          System.out.println("popping " + operator);
-                                postFixExpression += operator + " ";
-                            }
-                        }
+                        clearToClosingTag(localStack);
                         continue;
                     } else if (part.equals("(")) {
                         localStack.push(part);
                         continue;
                     } else if (precedence >= getPrecedence(localStack.peek())) {
-                        while (localStack.size() > 0 && precedence >= getPrecedence(localStack.peek())) {
-                            String local = localStack.pop();
-        //                    System.out.println("Popping " + local);
-                            postFixExpression += local + " ";
-                        }
+                        clearToLowerPrec(localStack, precedence);
                     }
           //          System.out.println("Pushing " + part);
                     localStack.push(part);
@@ -115,7 +122,7 @@ public class ExpressionEvaluator {
         }
 
         root = operator;
-        //inorderTraversal(root);
+
         System.out.println("Beginning evalulation..");
         try {
             BinaryNode node = inorderEval(root);
@@ -167,69 +174,126 @@ public class ExpressionEvaluator {
         if (currentNode.getLeft() != null && currentNode.getRight() != null) {
             System.out.println("Evaluating for children of " + currentNode.getValue());
             currentNode = evaluate(left, currentNode, right);
+        } else {
+            addDefaultClassListToNode(currentNode);
         }
 
         return currentNode;
     }
 
-    // TODO grab the methods before passing
-    private BinaryNode evaluate(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
-        if (currentNode.getValue().equals("||")) {
-            for (DatabaseClass rightRecord: right.getRecords()) {
-                currentNode.addToRecords(rightRecord);
-            }
+    private void addDefaultClassListToNode(BinaryNode currentNode) {
+        String[] pair = currentNode.getValue().split("\\.");
+        if (pair.length > 1) {
+            System.out.println("Adding the classes for " + pair[0]);
+            currentNode.addToRecords(ClassesContainer.getClassList(pair[0]));
+        }
+    }
 
+
+    private String getDBObjectName(String dotStatement) {
+        String[] pair = dotStatement.split("\\.");
+        return pair[0];
+    }
+
+
+    private boolean isOR(String value) {
+        return value.equals("||");
+    }
+
+    private boolean isAND(String value) {
+        return value.equals("&&");
+    }
+
+    private boolean isDBObject(HashSet<DatabaseClass> records) {
+        return (records.size() != 0);
+    }
+
+
+    private BinaryNode executeANDCondition(BinaryNode left, BinaryNode currentNode, BinaryNode right) {
+        for (DatabaseClass rightRecord: right.getRecords()) {
             for (DatabaseClass leftRecord: left.getRecords()) {
-                currentNode.addToRecords(leftRecord);
-            }
-
-            return currentNode;
-        } else if (currentNode.getValue().equals("&&")) {
-            for (DatabaseClass rightRecord: right.getRecords()) {
-                for (DatabaseClass leftRecord: left.getRecords()) {
-                    if (rightRecord.getOID() == leftRecord.getOID()) {
-                        currentNode.addToRecords(leftRecord);
-                    }
+                if (rightRecord.getOID() == leftRecord.getOID()) {
+                    currentNode.addToRecords(leftRecord);
                 }
             }
-            return currentNode;
+        }
+        return currentNode;
+    }
+
+    private BinaryNode executeORCondition(BinaryNode left, BinaryNode currentNode, BinaryNode right) {
+        for (DatabaseClass rightRecord: right.getRecords()) {
+            currentNode.addToRecords(rightRecord);
         }
 
-
-        if (left.getRecords().size() != 0 && right.getRecords().size() != 0) {
-            System.out.println("Hitting case: (list, val, list)");
-            for (DatabaseClass rightRecord: right.getRecords()) {
-                for (DatabaseClass leftRecord: left.getRecords()) {
-                    boolean isMatch = findResults(getMethod(left.getValue(), leftRecord), currentNode.getValue(), getMethod(right.getValue(), rightRecord));
-                    if (isMatch) {
-                        System.out.println("Match found.");
-                        currentNode.addToRecords(leftRecord);
-                        currentNode.addToRecords(rightRecord);
-                    }
-                }
-            }
-        } else if (left.getRecords().size() != 0 && right.getRecords().size() == 0) {
-            System.out.println("Hitting case: (list, val, val)");
-            for (DatabaseClass record: left.getRecords()) {
-                boolean isMatch = findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
-                if (isMatch) {
-                    System.out.println("Match found.");
-                    currentNode.addToRecords(record);
-                }
-            }
-        } else if (left.getRecords().size() == 0) {
-            System.out.println("Hitting case: (val, val, list");
-            for (DatabaseClass rightRecord: right.getRecords()) {
-                boolean result = findResults(left.getValue(), currentNode.getValue(), rightRecord);
-            }
+        for (DatabaseClass leftRecord: left.getRecords()) {
+            currentNode.addToRecords(leftRecord);
         }
 
         return currentNode;
+
+    }
+
+    private BinaryNode evaluate(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
+
+        if (isConditional(currentNode.getValue())) {
+            return evaluateConditional(left, currentNode, right);
+        } else {
+            return evaluateExpression(left, currentNode,right);
+        }
+    }
+
+    private boolean isConditional(String value) {
+        return (value.equals("||") || value.equals("&&"));
+    }
+
+    private BinaryNode evaluateExpression(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
+        if (isDBObject(left.getRecords()) && isDBObject(right.getRecords())) {
+            return executeTwoDBObjectCase(left, currentNode, right);
+        } else if (isDBObject(left.getRecords()) && !isDBObject(right.getRecords())) {
+            return executeOneDBObjectCase(left, currentNode, right);
+        } else {
+            System.err.println("Invalid argument supplied. Must be DBObject operator operand");
+        }
+        return null;
+    }
+
+    private BinaryNode executeOneDBObjectCase(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
+        for (DatabaseClass record: left.getRecords()) {
+            boolean match = findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
+            if (match) {
+                System.out.println("Match found.");
+                currentNode.addToRecords(record);
+            }
+        }
+        return currentNode;
+    }
+
+    private BinaryNode executeTwoDBObjectCase(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
+        for (DatabaseClass rightRecord: right.getRecords()) {
+            for (DatabaseClass leftRecord: left.getRecords()) {
+                boolean match = findResults(getMethod(left.getValue(), leftRecord), currentNode.getValue(), getMethod(right.getValue(), rightRecord));
+                if (match) {
+                    System.out.println("Match found.");
+                    currentNode.addToRecords(leftRecord);
+                    currentNode.addToRecords(rightRecord);
+                }
+            }
+        }
+        return currentNode;
+    }
+
+    private BinaryNode evaluateConditional(BinaryNode left, BinaryNode currentNode, BinaryNode right) {
+        if (isOR(currentNode.getValue())) {
+            return executeORCondition(left,currentNode,right);
+        } else if (isAND(currentNode.getValue())) {
+            return executeANDCondition(left, currentNode, right);
+        } else {
+            return null;
+        }
     }
 
     private String getAttributeName(String dotExpression) {
         String[] temp = dotExpression.split("\\.");
-
         return temp[1];
     }
 
@@ -265,11 +329,6 @@ public class ExpressionEvaluator {
     }
 
 
-
-    private boolean isList(String pair) {
-        return (pair.contains("\\.") && (ClassesContainer.getClassList(pair.split("\\.")[0])) != null);
-    }
-
     public static int getPrecedence(String operator) {
         if (operator.equals("(") || operator.equals(")")) {
             return 1;
@@ -289,9 +348,4 @@ public class ExpressionEvaluator {
             return -1;
         }
     }
-
-    public void setPostFixExpression(String postFixExpression) {
-        this.postFixExpression = postFixExpression;
-    }
-
 }
