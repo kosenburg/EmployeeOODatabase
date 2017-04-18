@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Evaluator {
 
     public static boolean evaluate(String operand1, String operator, String operand2) {
-        System.out.println("Evaluating: " + operand1 + operator + operand2);
+        //System.out.println("Evaluating: " + operand1 + operator + operand2);
         switch (operator) {
             case "<":
                 return Integer.parseInt(operand1) < Integer.parseInt(operand2);

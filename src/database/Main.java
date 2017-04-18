@@ -27,5 +27,9 @@ public class Main {
         cmd.executeCommand();
         cmd.returnResults();
 
+
+        String query2 = "Get dependent.name = Jim || dependent.name = John";
+        cmd = Parser.getCommand(query2);
+
     }
 }

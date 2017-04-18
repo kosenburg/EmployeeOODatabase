@@ -2,6 +2,8 @@ package database.Commands;
 
 import database.utilities.ClassesContainer;
 
+import java.util.Arrays;
+
 /**
  * Created by Kevin on 3/25/2017.
  */
@@ -14,6 +16,9 @@ public class Select implements Command{
         this.container = container;
     }
 
+    public Select() {
+
+    }
     @Override
     public void executeCommand() {
 
@@ -27,6 +32,11 @@ public class Select implements Command{
     @Override
     public void setParameters(String[] fields, String[] types, String[] conditions) {
 
+    }
+
+    public void setParameters(String userInput) {
+        String[] values = userInput.split("Get");
+        System.out.println(Arrays.toString(values));
     }
 
 

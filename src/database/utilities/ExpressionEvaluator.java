@@ -25,6 +25,7 @@ public class ExpressionEvaluator {
 
     public ExpressionEvaluator(String expression) {
         convertToPostFix(expression);
+        createTree();
         //setPostFixExpression(postFixExpression);
     }
 
@@ -82,7 +83,7 @@ public class ExpressionEvaluator {
             postFixExpression += localStack.pop() + " ";
         }
 
-        System.out.println(postFixExpression);
+        System.out.println("Internally generated postFixExpression: " + postFixExpression);
     }
 
     public boolean isMatch(DatabaseClass object) {
@@ -122,17 +123,7 @@ public class ExpressionEvaluator {
         }
 
         root = operator;
-
-        System.out.println("Beginning evalulation..");
-        try {
-            BinaryNode node = inorderEval(root);
-            for (DatabaseClass dbClass: node.getRecords()) {
-                Dependent dependent = (Dependent) dbClass;
-                System.out.println(((Dependent) dbClass).getName());
-            }
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Tree successfully created with root: " + root.getValue());
     }
 
     private BinaryNode inorderTraversal(BinaryNode currentNode) {
@@ -149,30 +140,34 @@ public class ExpressionEvaluator {
         return currentNode;
     }
 
+    public HashSet<DatabaseClass> getRecords() throws InvocationTargetException, IllegalAccessException {
+        return inorderEval(root).getRecords();
+    }
+
     private BinaryNode inorderEval(BinaryNode currentNode) throws InvocationTargetException, IllegalAccessException {
         BinaryNode left = null, right = null, result = null;
 
-        System.out.println("Current node is: " + currentNode.getValue());
+        //System.out.println("Current node is: " + currentNode.getValue());
         if (currentNode.getLeft() != null) {
-            System.out.println("Going to left child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
+            //System.out.println("Going to left child: " + currentNode.getLeft().getValue() + " of " + currentNode.getValue());
             left = inorderEval(currentNode.getLeft());
         }
 
         if (currentNode.getRight() != null) {
-            System.out.println("Going to right child: " + currentNode.getRight().getValue() + " of " + currentNode.getValue());
+            //System.out.println("Going to right child: " + currentNode.getRight().getValue() + " of " + currentNode.getValue());
             right = inorderEval((currentNode.getRight()));
         }
 
         if (currentNode.getLeft() == null && currentNode.getRight() == null) {
             String[] pair = currentNode.getValue().split("\\.");
             if (pair.length > 1) {
-                System.out.println("Adding the classes for " + pair[0]);
+            //    System.out.println("Adding the classes for " + pair[0]);
                 currentNode.addToRecords(ClassesContainer.getClassList(pair[0]));
             }
         }
 
         if (currentNode.getLeft() != null && currentNode.getRight() != null) {
-            System.out.println("Evaluating for children of " + currentNode.getValue());
+            //System.out.println("Evaluating for children of " + currentNode.getValue());
             currentNode = evaluate(left, currentNode, right);
         } else {
             addDefaultClassListToNode(currentNode);
@@ -184,7 +179,7 @@ public class ExpressionEvaluator {
     private void addDefaultClassListToNode(BinaryNode currentNode) {
         String[] pair = currentNode.getValue().split("\\.");
         if (pair.length > 1) {
-            System.out.println("Adding the classes for " + pair[0]);
+            //System.out.println("Adding the classes for " + pair[0]);
             currentNode.addToRecords(ClassesContainer.getClassList(pair[0]));
         }
     }
@@ -261,7 +256,7 @@ public class ExpressionEvaluator {
         for (DatabaseClass record: left.getRecords()) {
             boolean match = findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
             if (match) {
-                System.out.println("Match found.");
+              //  System.out.println("Match found.");
                 currentNode.addToRecords(record);
             }
         }
@@ -313,12 +308,12 @@ public class ExpressionEvaluator {
 
     private Method getMethod(String methodName, DatabaseClass dbClass) {
         methodName = getAttributeName(methodName);
-        System.out.println("Requested method " + methodName);
+        //System.out.println("Requested method " + methodName);
         try {
             for (Method method : dbClass.getClass().getMethods()) {
                 if (method.getName().contains("get") && method.getName().toLowerCase().contains(methodName)) {
                     Method innerMethod = dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
-                    System.out.println("Getting method " + innerMethod.getName());
+          //          System.out.println("Getting method " + innerMethod.getName());
                     return innerMethod;
                 }
             }
