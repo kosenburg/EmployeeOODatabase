@@ -1,8 +1,7 @@
 package database.utilities;
 
-import database.Classes.DatabaseClass;
-import database.Classes.Department;
-import database.Classes.Project;
+import database.Classes.*;
+import database.DataStructures.Date;
 
 import java.util.HashMap;
 
@@ -28,20 +27,20 @@ public class ObjectFactory {
     }
 
 
-    private static DatabaseClass createNewDepartment(HashMap<String, String> attributes) {
+    private static DatabaseClass createNewDepartment(HashMap<String, String> attributes) { // TODO set other object references
         return new Department(attributes.get("name"), attributes.get("number"),attributes.get("location"));
     }
 
-    private static DatabaseClass createNewProject(HashMap<String, String> attributes) {
+    private static DatabaseClass createNewProject(HashMap<String, String> attributes) { //TODO set other object references
         return new Project(attributes.get("name"), Integer.parseInt(attributes.get("number")),attributes.get("location"));
     }
 
-    private static DatabaseClass createNewEmployee(HashMap<String, String> attribute) {
-        return null; //TODO
+    private static DatabaseClass createNewEmployee(HashMap<String, String> attribute) { //TODO set other object references
+        return new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"));
     }
 
     private static DatabaseClass createNewDependent(HashMap<String, String> attribute) {
-        return null; //TODO
+        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("employee"))));
     }
 
 

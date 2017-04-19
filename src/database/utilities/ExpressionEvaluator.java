@@ -8,12 +8,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Stack;
 
 /**
  * Created by Kevin on 4/10/2017.
  */
-
 public class ExpressionEvaluator {
     private BinaryNode root;
 
@@ -81,17 +79,14 @@ public class ExpressionEvaluator {
     private void addDefaultClassListToNode(BinaryNode currentNode) {
         String[] pair = currentNode.getValue().split("\\.");
         if (pair.length > 1) {
-            //System.out.println("Adding the classes for " + pair[0]);
             currentNode.addToRecords(ClassesContainer.getClassList(pair[0]));
         }
     }
-
 
     private String getDBObjectName(String dotStatement) {
         String[] pair = dotStatement.split("\\.");
         return pair[0];
     }
-
 
     private boolean isOR(String value) {
         return value.equals("||");
@@ -104,7 +99,6 @@ public class ExpressionEvaluator {
     private boolean isDBObject(HashSet<DatabaseClass> records) {
         return (records.size() != 0);
     }
-
 
     private BinaryNode executeANDCondition(BinaryNode left, BinaryNode currentNode, BinaryNode right) {
         for (DatabaseClass rightRecord: right.getRecords()) {
@@ -121,17 +115,14 @@ public class ExpressionEvaluator {
         for (DatabaseClass rightRecord: right.getRecords()) {
             currentNode.addToRecords(rightRecord);
         }
-
         for (DatabaseClass leftRecord: left.getRecords()) {
             currentNode.addToRecords(leftRecord);
         }
-
         return currentNode;
 
     }
 
     private BinaryNode evaluate(BinaryNode left, BinaryNode currentNode, BinaryNode right) throws InvocationTargetException, IllegalAccessException {
-
         if (isConditional(currentNode.getValue())) {
             return evaluateConditional(left, currentNode, right);
         } else {
@@ -158,7 +149,6 @@ public class ExpressionEvaluator {
         for (DatabaseClass record: left.getRecords()) {
             boolean match = findResults(getMethod(left.getValue(), record).invoke(record), currentNode.getValue(), right.getValue());
             if (match) {
-              //  System.out.println("Match found.");
                 currentNode.addToRecords(record);
             }
         }
@@ -194,7 +184,6 @@ public class ExpressionEvaluator {
         return temp[1];
     }
 
-
     private boolean findResults(Object operand1, String operator, Object operand2) {
         if ((operand1 instanceof String) && (operand2 instanceof String)) {
             return Evaluator.evaluate((String) operand1, operator, (String) operand2);
@@ -210,13 +199,10 @@ public class ExpressionEvaluator {
 
     private Method getMethod(String methodName, DatabaseClass dbClass) {
         methodName = getAttributeName(methodName);
-        //System.out.println("Requested method " + methodName);
         try {
             for (Method method : dbClass.getClass().getMethods()) {
                 if (method.getName().contains("get") && method.getName().toLowerCase().contains(methodName)) {
-                    Method innerMethod = dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
-          //          System.out.println("Getting method " + innerMethod.getName());
-                    return innerMethod;
+                    return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
                 }
             }
         } catch (NoSuchMethodException e) {

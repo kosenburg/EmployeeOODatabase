@@ -1,14 +1,10 @@
 package database.utilities;
 
 import database.Classes.*;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Kevin on 3/30/2017.
@@ -19,7 +15,7 @@ public class ClassesContainerTest {
         ClassesContainer container = new ClassesContainer();
 
 
-        ClassesContainer.addClass(new Dependent("John", "F", new Employee()));
+        ClassesContainer.addClass(new Dependent("John", "F", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"))));
         /*container.addClass(new Department());
         container.addClass(new Project());
         container.addClass(new Employee());

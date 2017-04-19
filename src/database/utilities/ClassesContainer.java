@@ -29,6 +29,15 @@ public class ClassesContainer {
         }
     }
 
+    public static DatabaseClass getDBObject(String type, int oID) {
+        for (DatabaseClass dbClass: getClassList(type)) {
+            if (dbClass.getOID() == oID) {
+                return dbClass;
+            }
+        }
+        return null;
+    }
+
     public static ArrayList<DatabaseClass> getClassList(String type) {
         switch (type.toLowerCase()) {
             case "department":

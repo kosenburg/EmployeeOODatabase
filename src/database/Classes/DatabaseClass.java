@@ -6,7 +6,7 @@ import database.utilities.IdGenerator;
  * Created by Kevin on 4/15/2017.
  */
 public class DatabaseClass {
-    private long oid;
+    private int oid;
 
     public DatabaseClass() {
         setOID();
@@ -16,7 +16,7 @@ public class DatabaseClass {
         oid = IdGenerator.getID();
     }
 
-    public long getOID() {
+    public int getOID() {
         return oid;
     }
 

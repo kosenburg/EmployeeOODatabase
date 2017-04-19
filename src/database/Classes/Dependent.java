@@ -7,12 +7,12 @@ import database.DataStructures.Date;
  * Created by Kevin on 3/2/2017.
  */
 public class Dependent extends DatabaseClass{
-    private char sex;
+    private String sex;
     private String name;
     private Date birthDate;
     private Employee relationship;
 
-    public Dependent(String name, Date birthDate, char sex, Employee relationship) { // forces the constraint that a dependent must have an employee
+    public Dependent(String name, Date birthDate, String sex, Employee relationship) { // forces the constraint that a dependent must have an employee
         setName(name);
         setBirthDate(birthDate);
         setSex(sex);
@@ -25,14 +25,14 @@ public class Dependent extends DatabaseClass{
     }
 
     public Dependent(String name, String sex, Employee relationship) {
-        this(name, new Date("##/##/####"),' ',relationship);
+        this(name, new Date("##/##/####"),"",relationship);
     }
 
-    public char getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
