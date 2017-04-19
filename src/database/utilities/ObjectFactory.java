@@ -17,9 +17,9 @@ public class ObjectFactory {
             case "project":
                 return createNewProject(attributes);
             case "employee":
-                return null; //TODO
+                return  createNewEmployee(attributes);
             case "dependent":
-                return null; //TODO
+                return createNewDependent(attributes);
             case "department":
                 return createNewDepartment(attributes);
             default:
@@ -35,6 +35,16 @@ public class ObjectFactory {
     private static DatabaseClass createNewProject(HashMap<String, String> attributes) {
         return new Project(attributes.get("name"), Integer.parseInt(attributes.get("number")),attributes.get("location"));
     }
+
+    private static DatabaseClass createNewEmployee(HashMap<String, String> attribute) {
+        return null; //TODO
+    }
+
+    private static DatabaseClass createNewDependent(HashMap<String, String> attribute) {
+        return null; //TODO
+    }
+
+
 
 
 }

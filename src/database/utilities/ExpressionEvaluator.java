@@ -1,7 +1,8 @@
 package database.utilities;
 
 import database.Classes.DatabaseClass;
-import database.Classes.Dependent;
+import database.treecomponents.BinaryNode;
+import database.treecomponents.ExpressionTreeGenerator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,116 +15,17 @@ import java.util.Stack;
  */
 
 public class ExpressionEvaluator {
-    private ExpressionTree tree;
-    private String postFixExpression;
     private BinaryNode root;
-    private ArrayList<DatabaseClass> results;
 
-    public ExpressionEvaluator() {
-
-    }
 
     public ExpressionEvaluator(String expression) {
-        convertToPostFix(expression);
-        createTree();
-        //setPostFixExpression(postFixExpression);
+        ExpressionTreeGenerator expressionTreeGenerator = new ExpressionTreeGenerator(expression);
+        setRoot(expressionTreeGenerator.getExpressionTree());
     }
 
-
-    private Stack<String> clearToClosingTag(Stack<String> stack) {
-        String operator;
-        while (!(operator = stack.pop()).equals("(")) {
-            if (!operator.equals("(") && !operator.equals(")")) {
-                postFixExpression += operator + " ";
-            }
-        }
-        return stack;
-    }
-
-    private Stack<String> clearToLowerPrec(Stack<String> stack, int precedence) {
-        while (stack.size() > 0 && precedence >= getPrecedence(stack.peek())) {
-            String local = stack.pop();
-            postFixExpression += local + " ";
-        }
-        return stack;
-    }
-
-    public void convertToPostFix(String expression) {
-        Stack<String> localStack = new Stack<>();
-        postFixExpression = "";
-//        System.out.println("Converting to postfix...");
-
-        for (String part: expression.split(" ")) {
-  //          System.out.println("Working on part: " + part);
-            int precedence = getPrecedence(part);
-            if (precedence != -1) {
-                if (localStack.size() == 0) {
-    //                System.out.println("pushing " + part);
-                    localStack.push(part);
-                } else {
-                    if (part.equals(")")) {
-                        clearToClosingTag(localStack);
-                        continue;
-                    } else if (part.equals("(")) {
-                        localStack.push(part);
-                        continue;
-                    } else if (precedence >= getPrecedence(localStack.peek())) {
-                        clearToLowerPrec(localStack, precedence);
-                    }
-          //          System.out.println("Pushing " + part);
-                    localStack.push(part);
-                }
-            } else {
-                postFixExpression += part + " ";
-            }
-        }
-
-        while (localStack.size() > 0) {
-            //System.out.println("Expression: " + postFixExpression);
-            postFixExpression += localStack.pop() + " ";
-        }
-
-        System.out.println("Internally generated postFixExpression: " + postFixExpression);
-    }
-
-    public boolean isMatch(DatabaseClass object) {
-
-
-
-        // getCorrectList, for multiple objects can store in hashmap by name?
-        // for each key in the list map
-        //  get the list
-        //      for chosen list pick a value
-        //          run through tree with one from every other list and keep cycling
-        // start evaluation
-        // before each eval, check to make sure the name is a field
-        // if not throw exception
-        return false;
-    }
-
-    public void createTree() {
-        System.out.println("Creating tree...");
-        Stack<BinaryNode> valueStack = new Stack<>();
-        BinaryNode operator = null;
-        //System.out.println(postFixExpression);
-        for (String thing:postFixExpression.split(" ")) {
-            //System.out.println("looking at " + thing);
-            if (getPrecedence(thing) != -1) {
-                //System.out.println("Operator: " + thing);
-                BinaryNode[] nodes = new BinaryNode[2];
-                for (int i = 0; i < 2; i++) {
-                    nodes[i] = valueStack.pop();
-                }
-                operator = new BinaryNode(thing, nodes[1],nodes[0]);
-                valueStack.push(operator);
-            } else {
-                //System.out.println("Value: " + thing);
-                valueStack.push(new BinaryNode(thing, null, null));
-            }
-        }
-
-        root = operator;
-        System.out.println("Tree successfully created with root: " + root.getValue());
+    private void setRoot(BinaryNode root) {
+        System.out.println("The root of the tree has been set to: " + root.getValue());
+        this.root = root;
     }
 
     private BinaryNode inorderTraversal(BinaryNode currentNode) {
@@ -321,26 +223,5 @@ public class ExpressionEvaluator {
             System.err.println("The method " + methodName + " does not exist for the class " + dbClass.getClass().getName());
         }
         return null;
-    }
-
-
-    public static int getPrecedence(String operator) {
-        if (operator.equals("(") || operator.equals(")")) {
-            return 1;
-        } else if (operator.equals(">") || operator.equals("<") || operator.equals(">=") || operator.equals("<=")) {
-            return 2;
-        } else if (operator.equals("*") || operator.equals("/")) {
-            return 3;
-        } else if (operator.equals("+") || operator.equals("-")) {
-            return 4;
-        } else if (operator.equals("=") || operator.equals("")) {
-            return 5;
-        } else if (operator.equals("&&")) {
-            return 6;
-        } else if (operator.equals("||")) {
-            return 7;
-        } else {
-            return -1;
-        }
     }
 }

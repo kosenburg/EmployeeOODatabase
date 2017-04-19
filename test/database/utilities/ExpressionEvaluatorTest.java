@@ -27,7 +27,7 @@ public class ExpressionEvaluatorTest {
         ClassesContainer.addClass(new Dependent("John", "M", new Employee()));
         ClassesContainer.addClass(new Dependent("Tim", "M", new Employee()));
 
-        ExpressionEvaluator evaluator = new ExpressionEvaluator("dependent.name = John || dependent.name = Jim");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator("dependent.name = John");// || dependent.name = Jim");
 
 
         HashSet<DatabaseClass> classes = evaluator.getRecords();

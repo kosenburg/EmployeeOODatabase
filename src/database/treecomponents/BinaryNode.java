@@ -1,6 +1,7 @@
-package database.utilities;
+package database.treecomponents;
 
 import database.Classes.DatabaseClass;
+import database.utilities.Evaluator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,8 +66,8 @@ public class BinaryNode implements Comparable{
     public int compareTo(Object o) {
         BinaryNode node = (BinaryNode) o;
 
-        int thisPrecedence = ExpressionEvaluator.getPrecedence(this.getValue());
-        int thatPrecedence = ExpressionEvaluator.getPrecedence(node.getValue());
+        int thisPrecedence = Evaluator.getPrecedence(this.getValue());
+        int thatPrecedence = Evaluator.getPrecedence(node.getValue());
 
         if (thisPrecedence > thatPrecedence) {
             return 1;
