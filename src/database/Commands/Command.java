@@ -1,6 +1,7 @@
 package database.Commands;
 
 import database.utilities.ClassesContainer;
+import database.utilities.UIController;
 import org.jdom2.JDOMException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,4 +15,5 @@ public interface Command {
     void executeCommand() throws JDOMException, IOException, IllegalAccessException;
     void returnResults();
     void setParameters(String[] fields, String[] types, String[] conditions);
+    void setController(UIController controller);
 }

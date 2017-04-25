@@ -15,7 +15,7 @@ public class ClassesContainerTest {
         ClassesContainer container = new ClassesContainer();
 
 
-        ClassesContainer.addClass(new Dependent("John", "F", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"))));
+        ClassesContainer.addClass(new Dependent("John", "F", new Employee()));
         /*container.addClass(new Department());
         container.addClass(new Project());
         container.addClass(new Employee());

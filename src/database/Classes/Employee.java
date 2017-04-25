@@ -28,7 +28,9 @@ private ArrayList<Dependent> dependents;
         setDependents();
     }
 
+public Employee(){
 
+}
     public Employee(String firstName, String lastName, String middleInitial, String ssn, String sex) {
 
     }
