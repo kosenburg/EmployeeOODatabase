@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,9 +23,26 @@ public class XMLWriter implements Runnable{
 
     private static HashMap<String,String> attributes;
 
-    public XMLWriter(String type, HashMap<String,String> attributes){
-        this.type = type;
-        this.attributes = attributes;
+    public XMLWriter(DatabaseClass databaseClass) throws IllegalAccessException {
+
+        attributes = new HashMap<>();
+
+        Field[] fields = databaseClass.getClass().getDeclaredFields();
+
+        type = databaseClass.getClass().toString().substring(23);
+
+        for(Field field: fields){
+            field.setAccessible(true);
+
+            System.out.println(field.getName());
+            Object value = field.get(databaseClass);
+
+            //Need to fix to parseInt for number
+
+            attributes.put(field.getName(),(String) value);
+            System.out.println(value);
+        }
+
     }
 
 

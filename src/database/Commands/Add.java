@@ -1,10 +1,7 @@
 package database.Commands;
 
 import database.Classes.DatabaseClass;
-import database.utilities.ClassesContainer;
-import database.utilities.FieldContainer;
-import database.utilities.ObjectFactory;
-import database.utilities.XMLWriter;
+import database.utilities.*;
 import org.jdom2.JDOMException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,13 +17,14 @@ public class Add implements Command {
     private String type;
     private HashMap<String,String> attributes;
     private XMLWriter writer;
+    private UIController uicontroller;
 
     public Add(String[] fields, String type) {
         System.out.println("Creating Add command...");
         setAttributes();
         setType(type);
         collectFieldData(fields);
-        writer = new XMLWriter(type,attributes);
+
     }
 
     private void setAttributes() {
@@ -37,12 +35,15 @@ public class Add implements Command {
     public void executeCommand() throws JDOMException, IOException, IllegalAccessException {
         System.out.println("Command executed");
 
+        uicontroller.setTextArea(this.getClass().toString().substring(24) + " command is being executed");
         DatabaseClass db = ObjectFactory.getObject(type,attributes);
 
-        //run after Class Object created
-        writer.run();
+        writer = new XMLWriter(db);
 
-        Class classname = db.getClass();
+        //run after Class Object created
+        uicontroller.setTextArea("Object stored in XML!");
+
+
 
         /* Get the class values
 
@@ -56,6 +57,7 @@ public class Add implements Command {
   */
         //System.out.println("Object created: " + db);
         if (db !=null) {
+            writer.run();
             ClassesContainer.addClass(db);
         }
 
@@ -72,12 +74,19 @@ public class Add implements Command {
             builder.append(key + " = " + attributes.get(key) + ", ");
         }
         String output = builder.toString();
+
+        uicontroller.setTextArea(output.substring(0,output.length() - 2));
         System.out.println(output.substring(0,output.length() - 2));
     }
 
     @Override
     public void setParameters(String[] fields, String[] types, String[] conditions) {
         collectFieldData(fields);
+    }
+
+    @Override
+    public void setController(UIController controller) {
+        this.uicontroller = controller;
     }
 
     private void collectFieldData(String[] fields) {
