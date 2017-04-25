@@ -20,6 +20,7 @@ public class Main {
 
 
 
+
         String query = "Add Project With location=here,number=2,name=AProject";
         Command cmd = Parser.getCommand(query);
         cmd.executeCommand();
@@ -41,6 +42,10 @@ public class Main {
         cmd = Parser.getCommand(query1);
         cmd.executeCommand();
         cmd.returnResults();
+
+
+        String query2 = "Get dependent.name = Jim || dependent.name = John";
+        cmd = Parser.getCommand(query2);
 
     }
 }

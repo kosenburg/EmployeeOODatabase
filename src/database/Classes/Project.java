@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Kevin on 3/2/2017.
  */
-public class Project implements DatabaseClass {
+public class Project extends DatabaseClass {
     private String location;
     private int number;
     private String name;

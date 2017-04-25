@@ -6,13 +6,13 @@ import database.DataStructures.Date;
 /**
  * Created by Kevin on 3/2/2017.
  */
-public class Dependent implements DatabaseClass{
-    private char sex;
+public class Dependent extends DatabaseClass{
+    private String sex;
     private String name;
     private Date birthDate;
     private Employee relationship;
 
-    public Dependent(String name, Date birthDate, char sex, Employee relationship) { // forces the constraint that a dependent must have an employee
+    public Dependent(String name, Date birthDate, String sex, Employee relationship) { // forces the constraint that a dependent must have an employee
         setName(name);
         setBirthDate(birthDate);
         setSex(sex);
@@ -20,15 +20,19 @@ public class Dependent implements DatabaseClass{
 
     }
 
-    public Dependent(String name, String sex, Employee relationship) {
-        this(name, new Date("##/##/####"),' ',relationship);
+    public Dependent() {
+
     }
 
-    public char getSex() {
+    public Dependent(String name, String sex, Employee relationship) {
+        this(name, new Date("##/##/####"),"",relationship);
+    }
+
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

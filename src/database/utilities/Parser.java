@@ -2,6 +2,7 @@ package database.utilities;
 
 import database.Commands.Add;
 import database.Commands.Command;
+import database.Commands.Select;
 
 /**
  * Created by Kevin on 3/30/2017.
@@ -17,8 +18,8 @@ public class Parser {
 
         if (commandName.equals("add")) {
             return new Add(attributes.split(","), type);
-        } else if (commandName.equals("select")) {
-
+        } else if (commandName.equals("get")) {
+            return new Select();
         } else if (commandName.equals("remove")) {
 
         } else {
