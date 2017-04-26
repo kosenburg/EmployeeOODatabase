@@ -11,12 +11,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 
 public class Main {
 
-    public static void main(String[] args) throws ParserConfigurationException, JDOMException, IOException, IllegalAccessException, TransformerException {
+    public static void main(String[] args) throws ParserConfigurationException, JDOMException, IOException, IllegalAccessException, TransformerException, ClassNotFoundException, InvocationTargetException {
 
 
 

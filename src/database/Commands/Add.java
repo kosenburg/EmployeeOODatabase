@@ -41,7 +41,6 @@ public class Add implements Command {
         writer = new XMLWriter(db);
 
         //run after Class Object created
-        uicontroller.setTextArea("Object stored in XML!");
 
 
 
@@ -56,8 +55,11 @@ public class Add implements Command {
         }
   */
         //System.out.println("Object created: " + db);
+
         if (db !=null) {
             writer.run();
+            uicontroller.setTextArea("Object stored in XML!");
+
             ClassesContainer.addClass(db);
         }
 

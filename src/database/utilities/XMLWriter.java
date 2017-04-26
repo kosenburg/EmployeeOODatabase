@@ -37,9 +37,17 @@ public class XMLWriter implements Runnable{
             System.out.println(field.getName());
             Object value = field.get(databaseClass);
 
-            //Need to fix to parseInt for number
+            if(field.getType().getName().toString().equals("java.lang.String")){
+                attributes.put(field.getName(),(String) value);
 
-            attributes.put(field.getName(),(String) value);
+            }else if(field.getType().getName().toString().equals("int")){
+                attributes.put(field.getName(), Integer.toString((Integer) value));
+            }else{
+
+            }
+
+
+
             System.out.println(value);
         }
 
