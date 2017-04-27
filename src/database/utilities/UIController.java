@@ -1,5 +1,6 @@
 package database.utilities;
 
+import database.Classes.DatabaseClass;
 import database.Commands.Command;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.jdom2.JDOMException;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -83,6 +85,31 @@ public class UIController implements Initializable {
     }
 
     private void readObjectXML(){
+
+
+
+       String [] types = {"Department","Dependent","Employee","Project"};
+        for(String type: types) {
+            boolean check = new File(type + ".xml").exists();
+
+
+            if(check == true){
+                XMLReader objectReader = null;
+                try {
+                    objectReader = new XMLReader(type);
+                } catch (ClassNotFoundException e) {
+                }
+                objectReader.run();
+                this.setTextArea("XML loaded for object of type " + type + "!");
+                System.out.println("XML for object of " + type + " found!");
+
+            }else{
+                this.setTextArea("There is no XML for the object of type " + type + ".");
+                System.out.println("No XML for object of " + type + " found.");
+
+            }
+            }
+
 
     }
 

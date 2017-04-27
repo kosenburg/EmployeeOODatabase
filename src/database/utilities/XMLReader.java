@@ -106,6 +106,7 @@ public class XMLReader implements Runnable{
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
 
     }

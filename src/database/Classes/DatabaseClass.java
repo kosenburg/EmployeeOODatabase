@@ -7,6 +7,7 @@ import database.utilities.IdGenerator;
  */
 public class DatabaseClass {
     private int oid;
+    private String[] classTypes;
 
     public DatabaseClass() {
         setOID();
@@ -20,5 +21,6 @@ public class DatabaseClass {
     public int getOID() {
         return oid;
     }
+
 
 }
