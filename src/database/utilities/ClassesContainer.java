@@ -32,7 +32,7 @@ public class ClassesContainer {
     public static DatabaseClass getDBObject(String type, int oID) {
         for (DatabaseClass dbClass: getClassList(type)) {
             if (dbClass.getOID() == oID) {
-                System.out.println("returning class: " + dbClass.getOID());
+         //       System.out.println("returning class: " + dbClass.getOID());
                 return dbClass;
             }
         }

@@ -4,6 +4,7 @@ import database.Classes.DatabaseClass;
 import database.utilities.ClassesContainer;
 import database.utilities.ExpressionEvaluator;
 import database.utilities.OutputManager;
+import database.utilities.UIController;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -51,5 +52,15 @@ public class Select implements Command{
             e.printStackTrace();
             System.err.println("Error while outputing results due to: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void setParameters(String[] fields, String[] types, String[] conditions) {
+
+    }
+
+    @Override
+    public void setController(UIController controller) {
+
     }
 }

@@ -26,28 +26,28 @@ public class EmployeeTest {
 
     @Test
     public void getFirstName() throws Exception {
-        Employee employee = new Employee("Jon","Smith","M","222-33-1122",'M');
+        Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
 
         Assert.assertEquals("Jon",employee.getFirstName());
     }
 
     @Test
     public void getMidInit() throws Exception {
-        Employee employee = new Employee("Jon","Smith","M","222-33-1122",'M');
+        Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
 
         Assert.assertEquals("M",employee.getMidInit());
     }
 
     @Test
     public void getLastName() throws Exception {
-        Employee employee = new Employee("Jon","Smith","M","222-33-1122",'M');
+        Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
 
         Assert.assertEquals("Smith",employee.getLastName());
     }
 
     @Test
     public void getSsn() throws Exception {
-        Employee employee = new Employee("Jon","Smith","M","222-33-1122",'M');
+        Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
 
         Assert.assertEquals("222-33-1122",employee.getSsn());
     }

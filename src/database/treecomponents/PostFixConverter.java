@@ -62,7 +62,7 @@ public class PostFixConverter {
         }
         clearRestOfStack();
 
-        System.out.println("Internally generated postFixExpression: " + postFixExpression);
+//        System.out.println("Internally generated postFixExpression: " + postFixExpression);
         return postFixExpression;
     }
 

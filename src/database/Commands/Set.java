@@ -21,6 +21,7 @@ public class Set extends Select {
 
     @Override
     public void executeCommand() {
+        System.out.println("Performing set operation...");
         try {
             super.executeCommand();
             addAttributes();
@@ -35,9 +36,9 @@ public class Set extends Select {
                 String[] temp = pair.split("=");
                 Method method = getMethod(temp[0], databaseClass);
 
-                System.out.println("Invoking " + method.getName() + " with " + temp[1] + " as argument.");
+                //System.out.println("Invoking " + method.getName() + " with " + temp[1] + " as argument.");
                 perform(method,databaseClass,temp);
-                System.out.println();
+                //System.out.println();
             }
         }
 

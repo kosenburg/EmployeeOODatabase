@@ -22,7 +22,7 @@ public class ExpressionEvaluator {
     }
 
     private void setRoot(BinaryNode root) {
-        System.out.println("The root of the tree has been set to: " + root.getValue());
+        //System.out.println("The root of the tree has been set to: " + root.getValue());
         this.root = root;
     }
 

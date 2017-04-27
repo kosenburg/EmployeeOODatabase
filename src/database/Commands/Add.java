@@ -41,9 +41,6 @@ public class Add implements Command {
         writer = new XMLWriter(db);
 
         //run after Class Object created
-
-
-
         /* Get the class values
 
         Field[] fields = classname.getDeclaredFields();
@@ -59,13 +56,8 @@ public class Add implements Command {
         if (db !=null) {
             writer.run();
             uicontroller.setTextArea("Object stored in XML!");
-
             ClassesContainer.addClass(db);
         }
-
-
-
-
     }
 
     @Override
@@ -79,6 +71,11 @@ public class Add implements Command {
 
         uicontroller.setTextArea(output.substring(0,output.length() - 2));
         System.out.println(output.substring(0,output.length() - 2));
+    }
+
+    @Override
+    public void setParameters(String[] fields, String[] types, String[] conditions) {
+
     }
 
 

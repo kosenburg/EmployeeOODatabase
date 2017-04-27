@@ -39,7 +39,7 @@ public class ExpressionTreeGenerator {
     }
 
     public BinaryNode getExpressionTree() {
-        System.out.println("Creating tree...");
+        //System.out.println("Creating tree...");
 
         for (String value: postFixExpression.split(" ")) {
             if (isOperator(value)) {
@@ -49,7 +49,7 @@ public class ExpressionTreeGenerator {
                 valueStack.push(new BinaryNode(value, null, null));
             }
         }
-        System.out.println("Tree created.");
+        //System.out.println("Tree created.");
         return node;
     }
 
