@@ -32,7 +32,7 @@ public class ObjectFactory {
     }
 
     private static DatabaseClass createNewProject(HashMap<String, String> attributes) { //TODO set other object references
-        return new Project(attributes.get("name"), Integer.parseInt(attributes.get("number")),attributes.get("location"));
+        return new Project(attributes.get("name"), attributes.get("number"),attributes.get("location"));
     }
 
     private static DatabaseClass createNewEmployee(HashMap<String, String> attribute) { //TODO set other object references
@@ -40,7 +40,7 @@ public class ObjectFactory {
     }
 
     private static DatabaseClass createNewDependent(HashMap<String, String> attribute) {
-        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationship"))));
+        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationships"))));
     }
 
 

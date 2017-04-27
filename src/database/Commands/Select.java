@@ -46,6 +46,7 @@ public class Select implements Command{
                 outputManager.displayFullRecord(databaseClass);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
             System.err.println("Error while outputing results due to: " + e.getMessage());
         }
     }

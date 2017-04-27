@@ -15,28 +15,26 @@ private ArrayList<Project> projects;
 private ArrayList<Employee> employees;
 
 
-
 	public Department(String name, String number, String location) {
 		setName(name);
 		setNumber(number);
 		setLocation(location);
 		setEmployees();
+		setManagerStartDate(new Date("22/22/2222"));
 		setProjects();
 	}
-
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
 		employee.setDepartment(this);
 	}
 
-	public Employee getEmployee(String ssn) {
-		for (Employee employee: employees) {
-			if (employee.getSsn().equals(ssn)) {
-				return employee;
-			}
-		}
-		return null;
+	public ArrayList<Employee> getEmployees() {
+		return employees;
+	}
+
+	public ArrayList<Project> getProjects() {
+		return projects;
 	}
 
 	public String getName(){
@@ -59,19 +57,17 @@ private ArrayList<Employee> employees;
 	return manager.getSsn();
 	}
 
-	public void setManager(Employee manager, Date startDate){
-	this.manager = manager;
-	setManagerStartDate(startDate);
+	public void setManager(Employee manager){
+		this.manager = manager;
 	}
 
 	public String getManagerStartDate(){
 	return managerStartDate.getDate();
 	}
 
-	private void setManagerStartDate(Date managerStartDate){
+	public void setManagerStartDate(Date managerStartDate){
 	this.managerStartDate = managerStartDate;
 	}
-
 
 	public String getLocation(){
 		return location;
@@ -80,16 +76,6 @@ private ArrayList<Employee> employees;
 	public void setLocation(String location){
 		this.location = location;
 	}
-
-	public Project getProject(String name) {
-		for (Project project: projects) {
-			if (project.getName().equals(name)) {
-				return project;
-			}
-		}
-		return null;
-	}
-
 
 	public void addProject(Project project) {
 		projects.add(project);

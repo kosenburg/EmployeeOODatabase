@@ -4,8 +4,6 @@ import database.DataStructures.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Kevin on 3/25/2017.
  */
@@ -31,7 +29,7 @@ public class DependentTest {
         Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
         Dependent dependent = new Dependent("John", new Date("03/23/1223"),"M",employee);
 
-        Assert.assertEquals(employee, dependent.getRelationship());
+        Assert.assertEquals(employee, dependent.getRelationships());
     }
 
 }

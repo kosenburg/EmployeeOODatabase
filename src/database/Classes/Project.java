@@ -7,12 +7,12 @@ import java.util.ArrayList;
  */
 public class Project extends DatabaseClass {
     private String location;
-    private int number;
+    private String number;
     private String name;
     private ArrayList<Employee> employees;
 
 
-    public Project(String name, int number, String location) {
+    public Project(String name, String number, String location) {
         setName(name);
         setLocation(location);
         setNumber(number);
@@ -27,11 +27,11 @@ public class Project extends DatabaseClass {
         this.location = location;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -47,24 +47,8 @@ public class Project extends DatabaseClass {
         employees.add(e);
     }
 
-    public Employee getEmployee(String ssn) {
-        for(Employee employee:employees) {
-            if (employee.getSsn().equals(ssn)) {
-                return employee;
-            }
-        }
-        return null;
+    public ArrayList<Employee> getEmployees() {
+        return employees;
     }
 
-    public Employee[] getAllEmployees() {
-        Employee[] list = new Employee[employees.size()];
-
-        int i = 0;
-        for (Employee employee: employees) {
-            list[i] = employee;
-            i++;
-        }
-
-        return list;
-    }
 }

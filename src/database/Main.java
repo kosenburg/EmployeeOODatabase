@@ -23,7 +23,6 @@ public class Main {
         cmd.returnResults();
         System.out.println();
 
-
         String query1 = "Add Department With location=here,name=ADepartment,number=2";
         cmd = Parser.getCommand(query1);
         cmd.executeCommand();
@@ -36,8 +35,19 @@ public class Main {
         cmd.returnResults();
         System.out.println();
 
+        query = "Set manager=3 For department.number = 2";
+        cmd = Parser.getCommand(query);
+        cmd.executeCommand();
+        cmd.returnResults();
+        System.out.println();
 
-        String query3 = "Add Dependent With name=Jim,birthDate=04/15/1980,sex=M,relationship=3";
+        query = "Get department.name = ADepartment || project.name = AProject";
+        cmd = Parser.getCommand(query);
+        cmd.executeCommand();
+        cmd.returnResults();
+        System.out.println();
+/*
+        String query3 = "Add Dependent With name=Jim,birthDate=04/15/1980,sex=M,relationships=3";
         cmd = Parser.getCommand(query3);
         cmd.executeCommand();
         cmd.returnResults();
@@ -60,7 +70,7 @@ public class Main {
         cmd.executeCommand();
         cmd.returnResults();
         System.out.println();
-
+*/
         printLists();
     }
 

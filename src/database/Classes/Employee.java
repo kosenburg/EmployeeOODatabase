@@ -33,9 +33,7 @@ private ArrayList<Dependent> dependents;
         projects = new ArrayList<>();
     }
 
-
-    public Employee() {
-    }
+    public Employee() {}
 
     public void addSupervisee(Employee employee) {
         supervisees.add(employee);
@@ -43,10 +41,6 @@ private ArrayList<Dependent> dependents;
 
     public ArrayList<Employee> getSupervisees() {
         return supervisees;
-    }
-
-    public boolean isSuperviser() {
-        return (supervisees.size() > 0);
     }
 
     public String getFirstName(){
@@ -75,6 +69,10 @@ private ArrayList<Dependent> dependents;
 
     public String getSsn(){
     return ssn;
+    }
+
+    public ArrayList<Project> getProjects() {
+        return projects;
     }
 
     private void setSsn(String ssn){

@@ -59,7 +59,6 @@ public class Set extends Select {
             } else {
                 method.invoke(databaseClass, temp[1]);
             }
-
         }
 
     }
@@ -69,7 +68,9 @@ public class Set extends Select {
         try {
             for (Method method : dbClass.getClass().getMethods()) {
                 if ((method.getName().contains("add") || method.getName().contains("set"))&& method.getName().toLowerCase().contains(methodName)) {
-                    return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    if ((method.getName().toLowerCase().equals("set" + methodName)) || (method.getName().toLowerCase().equals("add" + methodName))) {
+                        return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    }
                 }
             }
         } catch (NoSuchMethodException e) {
