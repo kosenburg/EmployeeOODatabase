@@ -17,9 +17,9 @@ private ArrayList<Employee> employees;
 
 
 	public Department(String name, String number, String location) {
-		setDeptName(name);
-		setDeptNumber(number);
-		setDeptLocation(location);
+		setName(name);
+		setNumber(number);
+		setLocation(location);
 		setEmployees();
 		setProjects();
 	}
@@ -39,24 +39,19 @@ private ArrayList<Employee> employees;
 		return null;
 	}
 
-	public int getNumberOfEmployees() {
-		return employees.size();
-	}
-
-	public String getDeptName(){
+	public String getName(){
 	return name;
 	}
 
-	public void setDeptName(String deptName){
+	public void setName(String deptName){
 	this.name = deptName;
 	}
 
-
-	public String getDeptNumber(){
+	public String getNumber(){
 	return number;
 	}
 
-	public void setDeptNumber(String deptNumber){
+	public void setNumber(String deptNumber){
 	this.number = deptNumber;
 	}
 
@@ -78,14 +73,13 @@ private ArrayList<Employee> employees;
 	}
 
 
-	public String getDeptLocation(){
+	public String getLocation(){
 		return location;
 	}
 
-	public void setDeptLocation(String location){
+	public void setLocation(String location){
 		this.location = location;
 	}
-
 
 	public Project getProject(String name) {
 		for (Project project: projects) {
@@ -96,27 +90,16 @@ private ArrayList<Employee> employees;
 		return null;
 	}
 
-	public String displayAllProjects() {
-		StringBuilder builder = new StringBuilder();
-
-		for (Project project: projects) {
-			builder.append(project.getName() + ", ");
-		}
-
-		String finalList = builder.toString();
-		return finalList.substring(0,finalList.length() - 2);
-	}
-
 
 	public void addProject(Project project) {
 		projects.add(project);
 	}
 
-	public void setProjects() {
+	private void setProjects() {
 		this.projects = new ArrayList<>();
 	}
 
-	public void setEmployees() {
+	private void setEmployees() {
 		this.employees = new ArrayList<>();
 	}
 }

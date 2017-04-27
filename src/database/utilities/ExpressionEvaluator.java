@@ -202,7 +202,9 @@ public class ExpressionEvaluator {
         try {
             for (Method method : dbClass.getClass().getMethods()) {
                 if (method.getName().contains("get") && method.getName().toLowerCase().contains(methodName)) {
-                    return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    if (method.getName().toLowerCase().equals("get" + methodName)) {
+                        return dbClass.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    }
                 }
             }
         } catch (NoSuchMethodException e) {

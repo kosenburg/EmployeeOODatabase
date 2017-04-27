@@ -41,20 +41,21 @@ public class Parser {
         } else if (commandName.equals("remove")) {
             parseForRemove(arguments);
         } else if (commandName.equals("set")) {
-            parseForSet(arguments);
+            parseForSet(query);
         }
 
     }
 
-    private static void parseForSet(String[] arguments) {
-        attributes = arguments[1];
+    private static void parseForSet(String arguments) {
+        attributes = arguments.split(" ")[1];
 
+        expression = arguments.substring(arguments.indexOf("For") + 4);
 
-        for (int i = 1; i < arguments.length; i++) {
+        /*for (int i = 1; i < arguments.length; i++) {
             attributes += arguments[i] + " ";
-        }
-
+        }*/
     }
+
 
     private static void parseForSelect(String[] arguments) {
         attributes = "";

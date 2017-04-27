@@ -1,19 +1,21 @@
 package database.Commands;
 
-import database.Classes.DatabaseClass;
+import database.Classes.*;
+import database.utilities.ClassesContainer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * Created by Kevin on 4/27/2017.
  */
 public class Set extends Select {
     private String[] attributes;
+    private String type;
 
     public Set(String[] attributes, String expression) {
         super(expression);
+        setType(expression);
         this.attributes = attributes;
     }
 
@@ -32,11 +34,34 @@ public class Set extends Select {
             for (String pair: attributes) {
                 String[] temp = pair.split("=");
                 Method method = getMethod(temp[0], databaseClass);
+
                 System.out.println("Invoking " + method.getName() + " with " + temp[1] + " as argument.");
-                method.invoke(databaseClass,temp[1]);
+                perform(method,databaseClass,temp);
+                System.out.println();
+            }
+        }
+
+    }
+
+
+    private void perform(Method method, DatabaseClass databaseClass, String temp[]) throws InvocationTargetException, IllegalAccessException {
+        for (Class<?> param: method.getParameterTypes()){
+            String name = param.getName();
+
+            if (name.contains("Employee")) {
+                method.invoke(databaseClass, (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(temp[1])));
+            } else if (name.contains("Dependent")) {
+                method.invoke(databaseClass, (Dependent) ClassesContainer.getDBObject("Dependent", Integer.parseInt(temp[1])));
+            } else if (name.contains("Department")) {
+                method.invoke(databaseClass, (Department) ClassesContainer.getDBObject("Department", Integer.parseInt(temp[1])));
+            } else if (name.contains("Project")) {
+                method.invoke(databaseClass, (Project) ClassesContainer.getDBObject("Project", Integer.parseInt(temp[1])));
+            } else {
+                method.invoke(databaseClass, temp[1]);
             }
 
         }
+
     }
 
 
@@ -61,5 +86,9 @@ public class Set extends Select {
     @Override
     public void returnResults() {
         System.out.println("Attribute set successfully.");
+    }
+
+    private void setType(String expression) {
+        this.type = expression.split("\\.")[0].trim();
     }
 }

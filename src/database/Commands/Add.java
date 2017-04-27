@@ -52,6 +52,9 @@ public class Add implements Command {
             if (FieldContainer.isInFields(valuePair[0], type)) {
                 //System.out.println("Putting (" + valuePair[0] + ", " + valuePair[1] + ")");
                 attributes.put(valuePair[0], valuePair[1]);
+            } else {
+                System.err.println("Attribute " + valuePair[0] + " not found in object " + type);
+                System.exit(1);
             }
         }
     }

@@ -1,6 +1,7 @@
 package database.utilities;
 
 import database.Classes.DatabaseClass;
+import database.Classes.Department;
 import database.Classes.Dependent;
 import database.Classes.Employee;
 import org.junit.Test;
@@ -24,14 +25,15 @@ public class ExpressionEvaluatorTest {
         ClassesContainer.addClass(new Dependent("Jim", "F", new Employee()));
         ClassesContainer.addClass(new Dependent("John", "M", new Employee()));
         ClassesContainer.addClass(new Dependent("Tim", "M", new Employee()));
+        ClassesContainer.addClass(new Department("one","2","floridia"));
 
-        ExpressionEvaluator evaluator = new ExpressionEvaluator("dependent.name = John || dependent.name = Jim");
+        ExpressionEvaluator evaluator = new ExpressionEvaluator("department.number = 2");//"dependent.name = John || dependent.name = Jim");
 
 
         HashSet<DatabaseClass> classes = evaluator.getRecords();
         for (DatabaseClass dbClass: classes) {
-            dependent = (Dependent) dbClass;
-            System.out.println(((Dependent) dbClass).getName() + " id: " + dependent.getOID());
+            Department department = (Department) dbClass;
+            System.out.println(((Department) dbClass).getName() + " id: " + dependent.getOID());
         }
     }
 

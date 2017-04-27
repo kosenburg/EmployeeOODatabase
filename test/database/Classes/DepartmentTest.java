@@ -19,27 +19,19 @@ public class DepartmentTest {
         Assert.assertEquals(employee.getSsn(),department.getEmployee(employee.getSsn()).getSsn());
     }
 
-    @Test
-    public void getNumberOfEmployees() throws Exception {
-        Department department = new Department("myDepartment", "600","here,there,2213");
-        Assert.assertEquals(0,department.getNumberOfEmployees());
-
-        department.addEmployee(new Employee("Jon","Smith","M","222-33-1122","M"));
-        Assert.assertEquals(1,department.getNumberOfEmployees());
-    }
 
     @Test
     public void getDeptName() throws Exception {
         String departmentName = "myDepartment";
         Department department = new Department(departmentName, "600","here,there,2213");
-        Assert.assertEquals(departmentName, department.getDeptName());
+        Assert.assertEquals(departmentName, department.getName());
     }
 
     @Test
     public void getDeptNumber() throws Exception {
         String departmentNumber = "123";
         Department department = new Department("myDepartment", departmentNumber,"here,there,2213");
-        Assert.assertEquals(departmentNumber, department.getDeptNumber());
+        Assert.assertEquals(departmentNumber, department.getNumber());
     }
 
     @Test
@@ -56,7 +48,7 @@ public class DepartmentTest {
     public void getDeptLocation() throws Exception {
         String location = "here,there,2213";
         Department department = new Department("myDepartment", "123",location);
-        Assert.assertEquals(location,department.getDeptLocation());
+        Assert.assertEquals(location,department.getLocation());
     }
 
     @Test
@@ -68,7 +60,6 @@ public class DepartmentTest {
         department.addProject(project2);
 
         Assert.assertEquals(project1.getName(), department.getProject(project1.getName()).getName());
-        Assert.assertEquals("Project1, Project2", department.displayAllProjects());
     }
 
 }

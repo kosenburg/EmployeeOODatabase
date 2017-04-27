@@ -8,7 +8,7 @@ import java.util.Stack;
  * Created by Kevin on 4/18/2017.
  */
 public class PostFixConverter {
-    private static String postFixExpression = "";
+    private String postFixExpression = "";
     private String infixExpression;
     private Stack<String> operatorStack;
     private int currentPrecendence;

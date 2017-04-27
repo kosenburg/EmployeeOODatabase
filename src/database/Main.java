@@ -28,40 +28,38 @@ public class Main {
         cmd = Parser.getCommand(query1);
         cmd.executeCommand();
         cmd.returnResults();
+        System.out.println();
 
-        String query2 = "Add Employee With firstName=John,lastName=Smith,middleInitial=A,ssn=222-44-3333,M";
+        String query2 = "Add Employee With firstName=John,lastName=Smith,middleInitial=A,ssn=222-44-3333,sex=M";
         cmd = Parser.getCommand(query2);
         cmd.executeCommand();
         cmd.returnResults();
+        System.out.println();
 
 
         String query3 = "Add Dependent With name=Jim,birthDate=04/15/1980,sex=M,relationship=3";
         cmd = Parser.getCommand(query3);
         cmd.executeCommand();
         cmd.returnResults();
-
+        System.out.println();
 
         String query4 = "Get dependent.name = Jim || dependent.name = John";
         cmd = Parser.getCommand(query4);
         cmd.executeCommand();
         cmd.returnResults();
+        System.out.println();
 
         query = "Remove dependent.name = Jim";
         cmd = Parser.getCommand(query);
         cmd.executeCommand();
         cmd.returnResults();
+        System.out.println();
 
-        /*
-        query = "Set employee=3 For department.num=2";
+        query = "Set employee=3 For department.number = 2";
         cmd = Parser.getCommand(query);
         cmd.executeCommand();
         cmd.returnResults();
-*/
-
-        query = "Set employee=3 For department.num=2";
-        System.out.println(query.indexOf("For"));
-        System.out.println(query.charAt(query.indexOf("For") + 4));
-
+        System.out.println();
 
         printLists();
     }
