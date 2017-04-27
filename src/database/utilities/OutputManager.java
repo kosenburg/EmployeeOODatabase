@@ -10,6 +10,8 @@ import java.util.ArrayList;
  * Created by Kevin on 4/20/2017.
  */
 public class OutputManager {
+    private UIController uicontroller;
+
     public OutputManager() {
 
     }
@@ -122,5 +124,9 @@ public class OutputManager {
             }
         }
 
+    }
+
+    public void setController(UIController uicontroller) {
+        this.uicontroller = uicontroller;
     }
 }

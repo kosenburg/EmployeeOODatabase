@@ -23,9 +23,17 @@ public class UIController implements Initializable {
     @FXML private TextArea textArea;
     @FXML private Label statusLbl;
 
+    private XMLReader idReader;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Read Previous ID
+        readIDXML();
+
+        //read all other XML
+        readObjectXML();
+
 
     }
 
@@ -52,12 +60,30 @@ public class UIController implements Initializable {
         queryTxtField.setText("");
     }
 
+    //on close save state of db (id)
+
+
     public void setTextArea(String s) {
        textArea.appendText(s + "\n");
     }
 
     public void setStatusLbl(String s){
         statusLbl.setText(s);
+    }
+
+    private void readIDXML(){
+        try {
+            idReader = new XMLReader();
+            idReader.setID();
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readObjectXML(){
+
     }
 
 }

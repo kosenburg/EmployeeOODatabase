@@ -100,7 +100,7 @@ private ArrayList<Dependent> dependents;
     }
 
     private void setSex(String sex){
-    this.sex = this.sex;
+    this.sex = sex;
     }
 
     public int getSalary(){

@@ -10,4 +10,8 @@ public class IdGenerator {
         id++;
         return id;
     }
+
+    public static void setId(int id) {
+        IdGenerator.id = id;
+    }
 }

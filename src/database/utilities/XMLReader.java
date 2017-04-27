@@ -17,11 +17,13 @@ import java.util.*;
 public class XMLReader implements Runnable{
 
     private String type;
+    private String [] typeArray;
     private  File file;
     private SAXBuilder builder;
     private HashMap<String, String> attributes;
     DatabaseClass dbClass;
     ClassesContainer container;
+    private int oid;
 
     public XMLReader(String type) throws ClassNotFoundException {
         this.type = type.substring(0,1).toUpperCase() + type.substring(1);
@@ -29,6 +31,13 @@ public class XMLReader implements Runnable{
         file = new File(type + ".xml");
         builder = new SAXBuilder();
     }
+
+    public XMLReader() throws JDOMException, IOException {
+        oid = 0;
+        file = new File("id.xml");
+        builder = new SAXBuilder();
+    }
+
 
     private void setAttributes() throws ClassNotFoundException {
         attributes = new HashMap<String,String>();
@@ -40,6 +49,15 @@ public class XMLReader implements Runnable{
              attributes.put(field.getName(),"");
 
          }
+    }
+
+
+    public void setID() throws JDOMException, IOException {
+        Document doc = (Document) builder.build(file);
+
+        Element root = doc.getRootElement();
+        oid = Integer.parseInt(root.getChild("oid").getValue());
+        IdGenerator.setId(oid);
     }
 
     @Override

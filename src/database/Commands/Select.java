@@ -20,6 +20,7 @@ public class Select implements Command{
     private ExpressionEvaluator evaluator;
     protected HashSet<DatabaseClass> classes;
     private OutputManager outputManager;
+    private UIController uicontroller;
 
     public Select(ClassesContainer container) {
         this.container = container;
@@ -29,6 +30,7 @@ public class Select implements Command{
         this.expression = expression;
         this.evaluator = new ExpressionEvaluator(expression);
         this.outputManager = new OutputManager();
+        outputManager.setController(uicontroller);
     }
 
     @Override
@@ -61,6 +63,6 @@ public class Select implements Command{
 
     @Override
     public void setController(UIController controller) {
-
+        this.uicontroller = controller;
     }
 }
