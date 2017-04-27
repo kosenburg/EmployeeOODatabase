@@ -44,8 +44,8 @@ public class Dependent extends DatabaseClass{
         this.name = name;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public String getBirthDate() {
+        return birthDate.getDate();
     }
 
     public void setBirthDate(Date birthDate) {

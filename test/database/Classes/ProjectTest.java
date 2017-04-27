@@ -37,8 +37,8 @@ public class ProjectTest {
     @Test
     public void addAndGetEmployee() throws Exception {
         Project project = new Project("fsfs,sfsf,23",22,"Project1");
-        Employee employee1 = new Employee("Jon","Smith","M","222-33-1122",'M');
-        Employee employee2 = new Employee("Joe","Smith","M","222-34-1122",'M');
+        Employee employee1 = new Employee("Jon","Smith","M","222-33-1122","M");
+        Employee employee2 = new Employee("Joe","Smith","M","222-34-1122","M");
 
         project.addEmployee(employee1);
         project.addEmployee(employee2);

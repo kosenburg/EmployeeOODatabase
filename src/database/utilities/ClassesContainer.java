@@ -54,11 +54,28 @@ public class ClassesContainer {
 
     }
 
-    public static void main(String[] args) {
-
+    public static void removeClass(DatabaseClass classToRemove) {
+        System.out.println("Removing object of " + classToRemove.getClass());
+        if (classToRemove instanceof Department) {
+            remove(departments, classToRemove);
+        } else if (classToRemove instanceof Dependent) {
+            remove(dependents, classToRemove);
+        } else if (classToRemove instanceof  Employee) {
+            remove(employees, classToRemove);
+        } else if (classToRemove instanceof Project) {
+            remove(projects, classToRemove);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    //TODO Implement the find and searches for the lists of classes in here and leave logic for additional steps in
-    //TODO the command objects.
+    private static void remove(ArrayList<DatabaseClass> classes, DatabaseClass toRemove) {
+        for (DatabaseClass dbClass: classes) {
+            if (dbClass.getOID() == toRemove.getOID()) {
+                classes.remove(dbClass);
+                break;
+            }
+        }
+    }
 
 }

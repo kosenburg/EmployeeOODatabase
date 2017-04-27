@@ -16,13 +16,12 @@ private ArrayList<Employee> employees;
 
 
 
-	public Department(String name, String number, String location){
+	public Department(String name, String number, String location) {
 		setDeptName(name);
 		setDeptNumber(number);
 		setDeptLocation(location);
 		setEmployees();
 		setProjects();
-
 	}
 
 

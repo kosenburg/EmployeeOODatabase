@@ -43,14 +43,11 @@ public class Add implements Command {
         System.out.println(output.substring(0,output.length() - 2));
     }
 
-    @Override
-    public void setParameters(String[] fields, String[] types, String[] conditions) {
-        collectFieldData(fields);
-    }
 
     private void collectFieldData(String[] fields) {
        // System.out.println("Collecting field data...");
         for (String field: fields) {
+            //System.out.println(field);
             String[] valuePair = field.split("=");
             if (FieldContainer.isInFields(valuePair[0], type)) {
                 //System.out.println("Putting (" + valuePair[0] + ", " + valuePair[1] + ")");

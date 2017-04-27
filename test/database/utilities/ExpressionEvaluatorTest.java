@@ -18,12 +18,12 @@ public class ExpressionEvaluatorTest {
         //evaluator.convertToPostFix("dependent.name = John || dependent.name = Jim");
 
         ClassesContainer container = new ClassesContainer();
-        Dependent dependent = new Dependent("John", "F", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex")));
+        Dependent dependent = new Dependent("John", "F", new Employee());
         System.out.println("first dependent ID: " + dependent.getOID());
         ClassesContainer.addClass(dependent);
-        ClassesContainer.addClass(new Dependent("Jim", "F", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"))));
-        ClassesContainer.addClass(new Dependent("John", "M", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"))));
-        ClassesContainer.addClass(new Dependent("Tim", "M", new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"))));
+        ClassesContainer.addClass(new Dependent("Jim", "F", new Employee()));
+        ClassesContainer.addClass(new Dependent("John", "M", new Employee()));
+        ClassesContainer.addClass(new Dependent("Tim", "M", new Employee()));
 
         ExpressionEvaluator evaluator = new ExpressionEvaluator("dependent.name = John || dependent.name = Jim");
 

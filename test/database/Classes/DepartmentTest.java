@@ -10,7 +10,7 @@ public class DepartmentTest {
 
     @Test
     public void addEmployee() throws Exception {
-        Employee employee = new Employee("Jon","Smith","M","222-33-1122",'M');
+        Employee employee = new Employee("Jon","Smith","M","222-33-1122","M");
         Date date = new Date("03/24/2016");
         Department department = new Department("myDepartment", "600","here,there,2213");
         department.addEmployee(employee);
@@ -24,7 +24,7 @@ public class DepartmentTest {
         Department department = new Department("myDepartment", "600","here,there,2213");
         Assert.assertEquals(0,department.getNumberOfEmployees());
 
-        department.addEmployee(new Employee("Jon","Smith","M","222-33-1122",'M'));
+        department.addEmployee(new Employee("Jon","Smith","M","222-33-1122","M"));
         Assert.assertEquals(1,department.getNumberOfEmployees());
     }
 
@@ -47,7 +47,7 @@ public class DepartmentTest {
         String ssn = "222-33-1122";
         Date startDate = new Date("03/24/2017");
         Department department = new Department("myDepartment", "123","here,there,2213");
-        department.setManager(new Employee("Jon","Smith","M",ssn,'M'),startDate);
+        department.setManager(new Employee("Jon","Smith","M",ssn,"M"),startDate);
         Assert.assertEquals(ssn,department.getManagerSsn());
         Assert.assertEquals(startDate.getDate(), department.getManagerStartDate());
     }

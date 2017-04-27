@@ -11,14 +11,14 @@ private String lastName;
 private String ssn;
 private Date birthDate;
 private String address;
-private char sex;
+private String sex;
 private int salary;
 private ArrayList<Employee> supervisees;
 private ArrayList<Project> projects;
 private Department department;
 private ArrayList<Dependent> dependents;
 
-    public Employee(String firstName, String lastName, String middleInitial, String ssn, char sex){
+    public Employee(String firstName, String lastName, String middleInitial, String ssn, String sex){
         setFirstName(firstName);
         setLastName(lastName);
         setMidInit(middleInitial);
@@ -26,24 +26,23 @@ private ArrayList<Dependent> dependents;
         setSex(sex);
         setSupervisees();
         setDependents();
+        setProjets();
+    }
+
+    private void setProjets() {
+        projects = new ArrayList<>();
     }
 
 
-    public Employee(String firstName, String lastName, String middleInitial, String ssn, String sex) {
-
+    public Employee() {
     }
 
     public void addSupervisee(Employee employee) {
         supervisees.add(employee);
     }
 
-    public Employee getSupervisee(String employeeSsn) {
-        for (Employee employee:supervisees) {
-            if (employee.getSsn().equals(employeeSsn)) {
-                return employee;
-            }
-        }
-        return null;
+    public ArrayList<Employee> getSupervisees() {
+        return supervisees;
     }
 
     public boolean isSuperviser() {
@@ -58,7 +57,6 @@ private ArrayList<Dependent> dependents;
     this.firstName = fName;
     }
 
-
     public String getMidInit(){
     return middleInitial;
     }
@@ -67,12 +65,11 @@ private ArrayList<Dependent> dependents;
     this.middleInitial = mInit;
     }
 
-
     public String getLastName(){
     return lastName;
     }
 
-    public void setLastName(String lName){
+    private void setLastName(String lName){
     this.lastName = lName;
     }
 
@@ -84,8 +81,8 @@ private ArrayList<Dependent> dependents;
     this.ssn = ssn;
     }
 
-    public Date getBirthDate(){
-    return birthDate;
+    public String getBirthDate(){
+        return birthDate.getDate();
     }
 
     public void setBirthDate(Date bDate){
@@ -100,14 +97,13 @@ private ArrayList<Dependent> dependents;
     this.address = address;
     }
 
-    public char getSex(){
+    public String getSex(){
     return sex;
     }
 
-    public void setSex(char sex){
+    private void setSex(String sex){
     this.sex = this.sex;
     }
-
 
     public int getSalary(){
     return salary;
@@ -117,7 +113,7 @@ private ArrayList<Dependent> dependents;
     this.salary = salary;
     }
 
-    public void setSupervisees() {
+    private void setSupervisees() {
         this.supervisees = new ArrayList<>();
     }
 
@@ -137,7 +133,7 @@ private ArrayList<Dependent> dependents;
         dependents.add(dependent);
     }
 
-    public void setDependents() {
+    private void setDependents() {
         this.dependents = new ArrayList<>();
     }
 }

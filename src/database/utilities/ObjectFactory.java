@@ -40,7 +40,7 @@ public class ObjectFactory {
     }
 
     private static DatabaseClass createNewDependent(HashMap<String, String> attribute) {
-        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("employee"))));
+        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationship"))));
     }
 
 

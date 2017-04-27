@@ -14,6 +14,7 @@ public class DatabaseClass {
 
     private void setOID() {
         oid = IdGenerator.getID();
+        System.out.println("Setting oid: " + oid);
     }
 
     public int getOID() {
