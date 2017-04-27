@@ -33,6 +33,7 @@ public class Select implements Command{
     @Override
     public void executeCommand() {
         try {
+            System.out.println("Locating records...");
             classes = evaluator.getRecords();
         } catch (InvocationTargetException | IllegalAccessException e) {
             System.err.println("An error occurred while executing your select command due to: " + e.getMessage());
@@ -44,6 +45,7 @@ public class Select implements Command{
         try {
             for (DatabaseClass databaseClass : classes) {
                 outputManager.displayFullRecord(databaseClass);
+                System.out.println();
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

@@ -44,7 +44,9 @@ public class Main {
         query = "Get department.name = ADepartment || project.name = AProject";
         cmd = Parser.getCommand(query);
         cmd.executeCommand();
+        System.out.println("\nResults: {");
         cmd.returnResults();
+        System.out.println("}");
         System.out.println();
 /*
         String query3 = "Add Dependent With name=Jim,birthDate=04/15/1980,sex=M,relationships=3";
@@ -75,7 +77,7 @@ public class Main {
     }
 
     private static void printLists() {
-        System.out.println("Class list size:");
+        System.out.println("Objects in database:");
         System.out.println("Employee: " + ClassesContainer.getClassList("Employee").size());
         System.out.println("Department:" + ClassesContainer.getClassList("Department").size());
         System.out.println("Project: " + ClassesContainer.getClassList("Project").size());
