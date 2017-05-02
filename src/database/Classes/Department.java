@@ -1,6 +1,7 @@
 package database.Classes;
 
 import database.DataStructures.Date;
+import database.utilities.ClassesContainer;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,17 @@ private ArrayList<Employee> employees;
 		setManagerStartDate(new Date("22/22/2222"));
 		setProjects();
 	}
+
+	public Department(String name, String number, String location,int oid) {
+		super(oid);
+		setName(name);
+		setNumber(number);
+		setLocation(location);
+		setEmployees();
+		setManagerStartDate(new Date("22/22/2222"));
+		setProjects();
+	}
+
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
@@ -54,7 +66,7 @@ private ArrayList<Employee> employees;
 	}
 
 	public String getManagerSsn(){
-	return manager.getSsn();
+	return (manager != null) ? manager.getSsn() : "N/A";
 	}
 
 	public void setManager(Employee manager){
@@ -62,7 +74,7 @@ private ArrayList<Employee> employees;
 	}
 
 	public String getManagerStartDate(){
-	return managerStartDate.getDate();
+	return (manager != null) ? managerStartDate.getDate() : "N/A";
 	}
 
 	public void setManagerStartDate(Date managerStartDate){

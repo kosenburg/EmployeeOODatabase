@@ -53,7 +53,6 @@ public class UIController implements Initializable {
 
         textArea.appendText(commandType + " command created!\n");
 
-        statusLbl.setText(commandType + " command is being executed.");
         cmd.executeCommand();
 
 
@@ -100,11 +99,11 @@ public class UIController implements Initializable {
                 } catch (ClassNotFoundException e) {
                 }
                 objectReader.run();
-                this.setTextArea("XML loaded for object of type " + type + "!");
-                System.out.println("XML for object of " + type + " found!");
+                this.setTextArea("XML loaded for object of type " + type + "! There are " + ClassesContainer.getClassList(type).size() + " objects.\n");
+                System.out.println("XML for object of " + type + " found! There are " + ClassesContainer.getClassList(type).size() + " objects.");
 
             }else{
-                this.setTextArea("There is no XML for the object of type " + type + ".");
+                this.setTextArea("There is no XML for the object of type " + type + ".\n");
                 System.out.println("No XML for object of " + type + " found.");
 
             }
@@ -112,5 +111,6 @@ public class UIController implements Initializable {
 
 
     }
+
 
 }

@@ -7,20 +7,33 @@ import database.utilities.IdGenerator;
  */
 public class DatabaseClass {
     private int oid;
-    private String[] classTypes;
+
 
     public DatabaseClass() {
+
         setOID();
     }
 
-    private void setOID() {
+    public DatabaseClass(int i){
+      setOID(i);
+    }
+
+    private void setOID(int i) {
+        oid = i;
+        System.out.println("Setting oid: " + oid);
+    }
+
+    public void setOID() {
         oid = IdGenerator.getID();
         System.out.println("Setting oid: " + oid);
     }
 
+
+
     public int getOID() {
         return oid;
     }
+
 
 
 }

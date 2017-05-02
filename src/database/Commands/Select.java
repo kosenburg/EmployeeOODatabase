@@ -30,7 +30,6 @@ public class Select implements Command{
         this.expression = expression;
         this.evaluator = new ExpressionEvaluator(expression);
         this.outputManager = new OutputManager();
-        outputManager.setController(uicontroller);
     }
 
     @Override
@@ -45,10 +44,12 @@ public class Select implements Command{
 
     @Override
     public void returnResults() {
+        outputManager.setController(uicontroller);
         try {
             for (DatabaseClass databaseClass : classes) {
                 outputManager.displayFullRecord(databaseClass);
                 System.out.println();
+
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

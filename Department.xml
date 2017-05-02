@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Department>
-  <department number="2">
-    <name>ADepartment</name>
-    <location>here</location>
-  </department>
-  <department number="2">
-    <name>ADepartment</name>
-    <location>here</location>
-  </department>
-  <department number="2">
-    <name>ADepartment</name>
-    <location>here</location>
-  </department>
-  <department number="2">
+  <department oid="3">
+    <number>2</number>
     <name>ADepartment</name>
     <location>here</location>
   </department>
