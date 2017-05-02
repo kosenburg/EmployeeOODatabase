@@ -2,13 +2,13 @@ package database.Commands;
 
 import database.Classes.DatabaseClass;
 import database.utilities.*;
+import database.utilities.object_utilities.ClassesContainer;
+import database.utilities.object_utilities.FieldContainer;
+import database.utilities.object_utilities.ObjectFactory;
+import database.utilities.xml_utilities.XMLWriter;
 import org.jdom2.JDOMException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -24,7 +24,6 @@ public class Add implements Command {
         setAttributes();
         setType(type);
         collectFieldData(fields);
-
     }
 
     private void setAttributes() {
@@ -39,19 +38,6 @@ public class Add implements Command {
         DatabaseClass db = ObjectFactory.getObject(type,attributes);
 
         writer = new XMLWriter(db);
-
-        //run after Class Object created
-        /* Get the class values
-
-        Field[] fields = classname.getDeclaredFields();
-        for(Field field : fields) {
-            field.setAccessible(true);
-            String name = field.getName();
-            Object value = field.get(db);
-            System.out.println(value);
-        }
-  */
-        //System.out.println("Object created: " + db);
 
         if (db !=null) {
             writer.run();
@@ -85,7 +71,6 @@ public class Add implements Command {
     }
 
     private void collectFieldData(String[] fields) {
-       // System.out.println("Collecting field data...");
         for (String field: fields) {
             //System.out.println(field);
             String[] valuePair = field.split("=");

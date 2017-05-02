@@ -1,6 +1,6 @@
-package database.treecomponents;
+package database.query_engine.treecomponents;
 
-import database.utilities.Evaluator;
+import database.query_engine.Evaluator;
 
 import java.util.Stack;
 

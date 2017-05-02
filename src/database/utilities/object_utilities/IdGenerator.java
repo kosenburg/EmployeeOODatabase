@@ -1,4 +1,4 @@
-package database.utilities;
+package database.utilities.object_utilities;
 
 /**
  * Created by Kevin on 3/25/2017.

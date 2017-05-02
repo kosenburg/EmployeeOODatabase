@@ -1,8 +1,7 @@
 package database.Commands;
 
 import database.Classes.DatabaseClass;
-import database.utilities.ClassesContainer;
-import database.utilities.Parser;
+import database.utilities.object_utilities.ClassesContainer;
 
 /**
  * Created by Kevin on 4/27/2017.

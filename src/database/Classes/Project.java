@@ -50,5 +50,4 @@ public class Project extends DatabaseClass {
     public ArrayList<Employee> getEmployees() {
         return employees;
     }
-
 }

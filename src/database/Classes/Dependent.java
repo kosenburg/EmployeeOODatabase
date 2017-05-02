@@ -47,7 +47,7 @@ public class Dependent extends DatabaseClass{
     }
 
     public String getBirthDate() {
-        return birthDate.getDate();
+        return (birthDate != null) ? birthDate.getDate() : "N/A";
     }
 
     public void setBirthDate(Date birthDate) {

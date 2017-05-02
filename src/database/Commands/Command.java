@@ -1,11 +1,8 @@
 package database.Commands;
 
-import database.utilities.ClassesContainer;
 import database.utilities.UIController;
 import org.jdom2.JDOMException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 

@@ -1,4 +1,4 @@
-package database.utilities;
+package database.utilities.xml_utilities;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,9 +45,6 @@ public class XMLWriter implements Runnable{
             }else{
 
             }
-
-
-
             System.out.println(value);
         }
 

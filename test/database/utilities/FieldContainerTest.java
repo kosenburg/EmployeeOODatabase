@@ -1,12 +1,11 @@
 package database.utilities;
 
 import database.Classes.Project;
+import database.utilities.object_utilities.FieldContainer;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Kevin on 3/30/2017.

@@ -1,4 +1,4 @@
-package database.utilities;
+package database.utilities.object_utilities;
 
 import database.Classes.Department;
 import database.Classes.Dependent;

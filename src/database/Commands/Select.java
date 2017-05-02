@@ -1,8 +1,8 @@
 package database.Commands;
 
 import database.Classes.DatabaseClass;
-import database.utilities.ClassesContainer;
-import database.utilities.ExpressionEvaluator;
+import database.utilities.object_utilities.ClassesContainer;
+import database.query_engine.ExpressionEvaluator;
 import database.utilities.OutputManager;
 import database.utilities.UIController;
 
@@ -46,7 +46,6 @@ public class Select implements Command{
         try {
             for (DatabaseClass databaseClass : classes) {
                 outputManager.displayFullRecord(databaseClass);
-                System.out.println();
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

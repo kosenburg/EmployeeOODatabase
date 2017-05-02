@@ -4,6 +4,8 @@ import database.Classes.DatabaseClass;
 import database.Classes.Department;
 import database.Classes.Dependent;
 import database.Classes.Employee;
+import database.query_engine.ExpressionEvaluator;
+import database.utilities.object_utilities.ClassesContainer;
 import org.junit.Test;
 
 import java.util.HashSet;

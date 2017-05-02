@@ -1,8 +1,9 @@
-package database.utilities;
+package database.query_engine;
 
 import database.Classes.DatabaseClass;
-import database.treecomponents.BinaryNode;
-import database.treecomponents.ExpressionTreeGenerator;
+import database.query_engine.treecomponents.BinaryNode;
+import database.query_engine.treecomponents.ExpressionTreeGenerator;
+import database.utilities.object_utilities.ClassesContainer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

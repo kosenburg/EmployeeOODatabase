@@ -48,4 +48,20 @@
     <name>NewProject</name>
     <location>there</location>
   </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>AProject</name>
+    <location>here</location>
+  </project>
+  <project number="2">
+    <name>Project1</name>
+    <location>Baltimore</location>
+  </project>
 </Project>

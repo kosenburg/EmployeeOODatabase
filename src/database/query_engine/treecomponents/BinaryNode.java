@@ -1,7 +1,7 @@
-package database.treecomponents;
+package database.query_engine.treecomponents;
 
 import database.Classes.DatabaseClass;
-import database.utilities.Evaluator;
+import database.query_engine.Evaluator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
