@@ -43,13 +43,40 @@ public class XMLWriter implements Runnable{
             }else if(field.getType().getName().toString().equals("int")){
                 attributes.put(field.getName(), Integer.toString((Integer) value));
             }else{
-
+                attributes.put("oid", Integer.toString((Integer) databaseClass.getOID()));
             }
             System.out.println(value);
         }
 
     }
+public XMLWriter() {
+}
 
+public void saveID() throws IOException {
+    String fileName = "id.xml";
+
+    File file = new File(fileName);
+
+    Element root = new Element("ID");
+
+    //create XML document with root element
+    Document doc = new Document(root);
+
+    Element rootChild = new Element("oid");
+
+
+
+    doc.getRootElement().addContent(new Element("oid").setText(String.valueOf(IdGenerator.getID())));
+
+    XMLOutputter xmlOutput = new XMLOutputter();
+
+    xmlOutput.setFormat(Format.getPrettyFormat());
+
+    xmlOutput.output(doc, new FileWriter("id.xml"));
+
+    System.out.println("File Saved!");
+
+}
 
 
     @Override
@@ -73,7 +100,7 @@ public class XMLWriter implements Runnable{
 
                 //traverse through attributes list and append to rootChild
                 for (String key : attributes.keySet()) {
-                    if (key.equals("number") || key.equals("ssn")) {
+                    if (key.equals("oid")) {
                         rootChild.setAttribute(new Attribute(key, attributes.get(key)));
 
                     } else {
@@ -111,10 +138,10 @@ public class XMLWriter implements Runnable{
 
 
                 for (String key : attributes.keySet()) {
-                    if (key.equals("number") || key.equals("ssn")) {
+                    if (key.equals("oid")) {
                         child.setAttribute(new Attribute(key, attributes.get(key)));
 
-                    } else {
+                    }  else {
                         child.addContent(new Element(key).setText(attributes.get(key)));
                     }
                 }

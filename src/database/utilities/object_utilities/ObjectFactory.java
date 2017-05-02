@@ -28,19 +28,37 @@ public class ObjectFactory {
 
 
     private static DatabaseClass createNewDepartment(HashMap<String, String> attributes) { // TODO set other object references
-        return new Department(attributes.get("name"), attributes.get("number"),attributes.get("location"));
+           if(attributes.get("oid") == null) {
+               return new Department(attributes.get("name"), attributes.get("number"), attributes.get("location"));
+           }else{
+               return new Department(attributes.get("name"), attributes.get("number"), attributes.get("location"),Integer.parseInt(attributes.get("oid")));
+           }
     }
 
     private static DatabaseClass createNewProject(HashMap<String, String> attributes) { //TODO set other object references
-        return new Project(attributes.get("name"), attributes.get("number"),attributes.get("location"));
+        if(attributes.get("oid") == null) {
+            return new Project(attributes.get("name"), attributes.get("number"), attributes.get("location"));
+        }else{
+            return new Project(attributes.get("name"), attributes.get("number"),attributes.get("location"),Integer.parseInt(attributes.get("oid")));
+
+        }
     }
 
     private static DatabaseClass createNewEmployee(HashMap<String, String> attribute) { //TODO set other object references
-        return new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"));
+        if(attribute.get("oid") == null) {
+            return new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"));
+        }else{
+            return new Employee(attribute.get("firstName"), attribute.get("lastName"), attribute.get("middleInitial"), attribute.get("ssn"), attribute.get("sex"),Integer.parseInt(attribute.get("oid")));
+        }
     }
 
     private static DatabaseClass createNewDependent(HashMap<String, String> attribute) {
-        return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationships"))));
+        if(attribute.get("oid") == null) {
+            return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationships"))));
+        }else{
+            return new Dependent(attribute.get("name"), new Date(attribute.get("birthDate")), attribute.get("sex"), (Employee) ClassesContainer.getDBObject("Employee", Integer.parseInt(attribute.get("relationships"))), Integer.parseInt(attribute.get("oid")));
+
+        }
     }
 
 

@@ -1,8 +1,8 @@
 package database.Commands;
 
 import database.Classes.DatabaseClass;
-import database.utilities.object_utilities.ClassesContainer;
-import database.query_engine.ExpressionEvaluator;
+import database.utilities.ClassesContainer;
+import database.utilities.ExpressionEvaluator;
 import database.utilities.OutputManager;
 import database.utilities.UIController;
 
@@ -20,6 +20,7 @@ public class Select implements Command{
     private ExpressionEvaluator evaluator;
     protected HashSet<DatabaseClass> classes;
     private OutputManager outputManager;
+    private UIController uicontroller;
 
     public Select(ClassesContainer container) {
         this.container = container;
@@ -43,9 +44,12 @@ public class Select implements Command{
 
     @Override
     public void returnResults() {
+        outputManager.setController(uicontroller);
         try {
             for (DatabaseClass databaseClass : classes) {
                 outputManager.displayFullRecord(databaseClass);
+                System.out.println();
+
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -60,6 +64,6 @@ public class Select implements Command{
 
     @Override
     public void setController(UIController controller) {
-
+        this.uicontroller = controller;
     }
 }

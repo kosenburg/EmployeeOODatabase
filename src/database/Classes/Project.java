@@ -19,6 +19,14 @@ public class Project extends DatabaseClass {
         employees = new ArrayList<>();
     }
 
+    public Project(String name, String number, String location, int oid) {
+        super(oid);
+        setName(name);
+        setLocation(location);
+        setNumber(number);
+        employees = new ArrayList<>();
+    }
+
     public String getLocation() {
         return location;
     }

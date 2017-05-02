@@ -19,11 +19,13 @@ import java.util.*;
 public class XMLReader implements Runnable{
 
     private String type;
+    private String [] typeArray;
     private  File file;
     private SAXBuilder builder;
     private HashMap<String, String> attributes;
     DatabaseClass dbClass;
     ClassesContainer container;
+    private int oid;
 
     public XMLReader(String type) throws ClassNotFoundException {
         this.type = type.substring(0,1).toUpperCase() + type.substring(1);
@@ -31,6 +33,13 @@ public class XMLReader implements Runnable{
         file = new File(type + ".xml");
         builder = new SAXBuilder();
     }
+
+    public XMLReader() throws JDOMException, IOException {
+        oid = 0;
+        file = new File("id.xml");
+        builder = new SAXBuilder();
+    }
+
 
     private void setAttributes() throws ClassNotFoundException {
         attributes = new HashMap<String,String>();
@@ -44,6 +53,15 @@ public class XMLReader implements Runnable{
          }
     }
 
+
+    public void setID() throws JDOMException, IOException {
+        Document doc = (Document) builder.build(file);
+
+        Element root = doc.getRootElement();
+        oid = Integer.parseInt(root.getChild("oid").getValue());
+        IdGenerator.setId(oid);
+    }
+
     @Override
     public void run() {
         try{
@@ -53,25 +71,21 @@ public class XMLReader implements Runnable{
 
             Element root = doc.getRootElement();
 
+            String oid = root.getChild(type.toLowerCase()).getAttributeValue("oid");
 
             Set<String> keys = attributes.keySet();
 
             for(int i = 0; i < root.getChildren().size();i++) {
 
+                if (root.getChild(type.toLowerCase()).getAttribute("oid").getName() == "oid" && root.getChild(type.toLowerCase()).getAttribute("oid") != null) {
+                    System.out.println(root.getChild(type.toLowerCase()).getAttributeValue("oid"));
+                    attributes.put("oid",root.getChild(type.toLowerCase()).getAttributeValue("oid"));
+                }
+
                 for (String key : keys) {
-
-                    if (key.equals("number") && root.getChild(type.toLowerCase()).getAttribute(key) != null) {
-                        System.out.println(root.getChild(type.toLowerCase()).getAttributeValue(key));
-                        attributes.replace(key, root.getChild(type.toLowerCase()).getAttributeValue(key));
-                    } else if (key.equals("ssn") && root.getChild(type.toLowerCase()).getAttribute(key) != null) {
-                        System.out.println(root.getChild(type).getAttributeValue(key));
-                        attributes.replace(key, root.getChild(type.toLowerCase()).getAttributeValue(key));
-                    } else if (root.getChild(type.toLowerCase()).getChild(key) != null) {
+                   if (root.getChild(type.toLowerCase()).getChild(key) != null) {
                         attributes.replace(key, root.getChild(type.toLowerCase()).getChild(key).getValue());
-                    } else {
-                        break;
                     }
-
                 }
 
                 dbClass = ObjectFactory.getObject(type,attributes);
@@ -90,6 +104,7 @@ public class XMLReader implements Runnable{
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
 
     }

@@ -29,6 +29,18 @@ private ArrayList<Dependent> dependents;
         setProjets();
     }
 
+    public Employee(String firstName, String lastName, String middleInitial, String ssn, String sex, int oid) {
+        super(oid);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setMidInit(middleInitial);
+        setSsn(ssn);
+        setSex(sex);
+        setSupervisees();
+        setDependents();
+        setProjets();
+    }
+
     private void setProjets() {
         projects = new ArrayList<>();
     }

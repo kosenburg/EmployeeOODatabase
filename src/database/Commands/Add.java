@@ -57,6 +57,7 @@ public class Add implements Command {
 
         uicontroller.setTextArea(output.substring(0,output.length() - 2));
         System.out.println(output.substring(0,output.length() - 2));
+
     }
 
     @Override

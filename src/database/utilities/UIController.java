@@ -1,5 +1,6 @@
 package database.utilities;
 
+import database.Classes.DatabaseClass;
 import database.Commands.Command;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.jdom2.JDOMException;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -23,9 +25,17 @@ public class UIController implements Initializable {
     @FXML private TextArea textArea;
     @FXML private Label statusLbl;
 
+    private XMLReader idReader;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Read Previous ID
+        readIDXML();
+
+        //read all other XML
+        readObjectXML();
+
 
     }
 
@@ -43,7 +53,6 @@ public class UIController implements Initializable {
 
         textArea.appendText(commandType + " command created!\n");
 
-        statusLbl.setText(commandType + " command is being executed.");
         cmd.executeCommand();
 
 
@@ -52,6 +61,9 @@ public class UIController implements Initializable {
         queryTxtField.setText("");
     }
 
+    //on close save state of db (id)
+
+
     public void setTextArea(String s) {
        textArea.appendText(s + "\n");
     }
@@ -59,5 +71,46 @@ public class UIController implements Initializable {
     public void setStatusLbl(String s){
         statusLbl.setText(s);
     }
+
+    private void readIDXML(){
+        try {
+            idReader = new XMLReader();
+            idReader.setID();
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readObjectXML(){
+
+
+
+       String [] types = {"Department","Dependent","Employee","Project"};
+        for(String type: types) {
+            boolean check = new File(type + ".xml").exists();
+
+
+            if(check == true){
+                XMLReader objectReader = null;
+                try {
+                    objectReader = new XMLReader(type);
+                } catch (ClassNotFoundException e) {
+                }
+                objectReader.run();
+                this.setTextArea("XML loaded for object of type " + type + "! There are " + ClassesContainer.getClassList(type).size() + " objects.\n");
+                System.out.println("XML for object of " + type + " found! There are " + ClassesContainer.getClassList(type).size() + " objects.");
+
+            }else{
+                this.setTextArea("There is no XML for the object of type " + type + ".\n");
+                System.out.println("No XML for object of " + type + " found.");
+
+            }
+            }
+
+
+    }
+
 
 }

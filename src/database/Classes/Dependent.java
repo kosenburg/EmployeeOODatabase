@@ -22,12 +22,28 @@ public class Dependent extends DatabaseClass{
         addRelationships(relationship);
     }
 
+
+    public Dependent(String name, Date birthDate, String sex, Employee relationship, int oid) { // forces the constraint that a dependent must have an employee
+        super(oid);
+        setName(name);
+        setBirthDate(birthDate);
+        setSex(sex);
+        relationships = new ArrayList<>();
+        addRelationships(relationship);
+    }
+
     public Dependent() {
 
     }
 
+
+
     public Dependent(String name, String sex, Employee relationship) {
         this(name, new Date("##/##/####"),"",relationship);
+    }
+
+    public Dependent(String name, String sex, Employee relationship,int oid) {
+        this(name, new Date("##/##/####"),"",relationship,oid);
     }
 
     public String getSex() {

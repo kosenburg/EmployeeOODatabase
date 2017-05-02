@@ -2,6 +2,8 @@ package database; /**
  * Created by blakejoynes on 4/20/17.
  */
 
+import database.utilities.IdGenerator;
+import database.utilities.XMLWriter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,13 +26,22 @@ public class ui extends Application {
 
             Scene scene = new Scene(root);
 
-            stage.setTitle("FXML Welcome");
+            stage.setTitle("Employee Object Oriented Database");
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+
+    }
+
+    @Override
+    public void stop() throws IOException {
+        System.out.println("Stage is closing");
+        // Save ID
+         XMLWriter iDWriter = new XMLWriter();
+         iDWriter.saveID();
 
     }
 
