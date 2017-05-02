@@ -2,8 +2,8 @@ package database; /**
  * Created by blakejoynes on 4/20/17.
  */
 
-import database.utilities.IdGenerator;
-import database.utilities.XMLWriter;
+import database.utilities.object_utilities.IdGenerator;
+import database.utilities.xml_utilities.XMLWriter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

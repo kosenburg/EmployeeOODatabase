@@ -2,6 +2,7 @@ package database.utilities.xml_utilities;
 
 import database.Classes.DatabaseClass;
 import database.utilities.object_utilities.ClassesContainer;
+import database.utilities.object_utilities.IdGenerator;
 import database.utilities.object_utilities.ObjectFactory;
 import org.jdom2.Document;
 import org.jdom2.Element;

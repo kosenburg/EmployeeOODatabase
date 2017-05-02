@@ -78,17 +78,17 @@ public class OutputManager {
                         }
 
                         if (object instanceof Project) {
-                            output += "Works on: " + ((Project) object).getName() + " " + ((Project) object).getNumber();
+                            output += "Works on: " + ((Project) object).getName() + " " + ((Project) object).getNumber() + "\n";
                             System.out.println("Works on: " + ((Project) object).getName() + " " + ((Project) object).getNumber());
                         }
 
                         if (object instanceof Employee) {
-                            output += "Supervises (ssn): " + ((Employee) object).getSsn();
+                            output += "Supervises (ssn): " + ((Employee) object).getSsn() + "\n";
                             System.out.println("Supervises (ssn): " + ((Employee) object).getSsn());
                         }
                     }
                 } else if (result instanceof Department) {
-                    output += "Works in: " + ((Department) result).getName() + " " + ((Department) result).getNumber();
+                    output += "Works in: " + ((Department) result).getName() + " " + ((Department) result).getNumber() + "\n";
                     System.out.println("Works in: " + ((Department) result).getName() + " " + ((Department) result).getNumber());
                 }
             }
@@ -114,7 +114,7 @@ public class OutputManager {
                         }
 
                         if (object instanceof Project) {
-                            output += "Maintains project: " + ((Project) object).getName() + " " + ((Project) object).getNumber();
+                            output += "Maintains project: " + ((Project) object).getName() + " " + ((Project) object).getNumber() + "\n";
                             System.out.println("Maintains project: " + ((Project) object).getName() + " " + ((Project) object).getNumber());
                         }
                     }

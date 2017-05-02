@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Department>
-  <department oid="3">
+  <department oid="2">
     <number>2</number>
     <name>ADepartment</name>
     <location>here</location>
+  </department>
+  <department oid="3">
+    <number>4</number>
+    <name>Cosc</name>
+    <location>Towson</location>
   </department>
 </Department>

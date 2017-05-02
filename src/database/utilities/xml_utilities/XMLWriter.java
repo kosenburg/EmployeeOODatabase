@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import database.Classes.DatabaseClass;
+import database.utilities.object_utilities.IdGenerator;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;

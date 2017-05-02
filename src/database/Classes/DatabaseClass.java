@@ -1,6 +1,6 @@
 package database.Classes;
 
-import database.utilities.IdGenerator;
+import database.utilities.object_utilities.IdGenerator;
 
 /**
  * Created by Kevin on 4/15/2017.
