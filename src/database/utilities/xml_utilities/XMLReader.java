@@ -8,8 +8,11 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -74,18 +77,22 @@ public class XMLReader implements Runnable{
 
             String oid = root.getChild(type.toLowerCase()).getAttributeValue("oid");
 
+            List<Element> childrenList = root.getChildren();
+
             Set<String> keys = attributes.keySet();
 
             for(int i = 0; i < root.getChildren().size();i++) {
 
-                if (root.getChild(type.toLowerCase()).getAttribute("oid").getName() == "oid" && root.getChild(type.toLowerCase()).getAttribute("oid") != null) {
-                    System.out.println(root.getChild(type.toLowerCase()).getAttributeValue("oid"));
-                    attributes.put("oid",root.getChild(type.toLowerCase()).getAttributeValue("oid"));
+                Element currentchild = childrenList.get(i);
+
+                if (currentchild.getAttribute("oid").getName() == "oid" && currentchild.getAttribute("oid") != null) {
+                    System.out.println(currentchild.getAttributeValue("oid"));
+                    attributes.put("oid",currentchild.getAttributeValue("oid"));
                 }
 
                 for (String key : keys) {
-                   if (root.getChild(type.toLowerCase()).getChild(key) != null) {
-                        attributes.replace(key, root.getChild(type.toLowerCase()).getChild(key).getValue());
+                   if (currentchild.getChild(key) != null) {
+                        attributes.replace(key, currentchild.getChild(key).getValue());
                     }
                 }
 
@@ -108,5 +115,37 @@ public class XMLReader implements Runnable{
 
         }
 
+    }
+
+    public void remove(DatabaseClass dbClass,String fieldName) throws IllegalAccessException, JDOMException, IOException {
+
+        oid = dbClass.getOID();
+
+        Document doc = (Document) builder.build(file);
+
+        Element root = doc.getRootElement();
+
+        List<Element> childrenList  = root.getChildren();
+
+        for(Element child: childrenList){
+           if(Integer.parseInt(child.getAttributeValue("oid")) == oid){
+            root.removeContent(child);
+           }
+
+        }
+
+        if(childrenList.size() == 0){
+         file.delete();
+         System.out.println(file + " is deleted!");
+        }else {
+
+
+            XMLOutputter xmlOutput = new XMLOutputter();
+
+            // display nice nice
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(doc, new FileWriter(file));
+
+        }
     }
 }

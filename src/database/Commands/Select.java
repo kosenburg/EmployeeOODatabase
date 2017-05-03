@@ -36,8 +36,10 @@ public class Select implements Command{
     public void executeCommand() {
         try {
             System.out.println("Locating records...");
+            uicontroller.setTextArea("Locating records...\n");
             classes = evaluator.getRecords();
         } catch (InvocationTargetException | IllegalAccessException e) {
+            uicontroller.setTextArea("An error occurred while executing your select command due to: " + e.getMessage() + "\n");
             System.err.println("An error occurred while executing your select command due to: " + e.getMessage());
         }
     }
@@ -53,6 +55,7 @@ public class Select implements Command{
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            uicontroller.setTextArea("Error while outputing results due to: " + e.getMessage() + "\n");
             System.err.println("Error while outputing results due to: " + e.getMessage());
         }
     }

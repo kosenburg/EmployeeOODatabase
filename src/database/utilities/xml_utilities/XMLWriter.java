@@ -5,10 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import database.Classes.DatabaseClass;
+import database.Classes.Employee;
+import database.DataStructures.Date;
 import database.utilities.object_utilities.IdGenerator;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
@@ -32,24 +35,37 @@ public class XMLWriter implements Runnable{
 
         type = databaseClass.getClass().toString().substring(23);
 
-        for(Field field: fields){
+        for(Field field: fields) {
             field.setAccessible(true);
 
-            System.out.println(field.getName());
+            String fieldName = field.getName();
+
+            System.out.println(fieldName);
+
             Object value = field.get(databaseClass);
 
-            if(field.getType().getName().toString().equals("java.lang.String")){
-                attributes.put(field.getName(),(String) value);
+            if (field.getType().getName().toString().equals("java.lang.String")) {
+                attributes.put(fieldName, (String) value);
 
-            }else if(field.getType().getName().toString().equals("int")){
-                attributes.put(field.getName(), Integer.toString((Integer) value));
-            }else{
-                attributes.put("oid", Integer.toString((Integer) databaseClass.getOID()));
+            } else if (field.getType().getName().toString().equals("int")) {
+                attributes.put(fieldName, Integer.toString((Integer) value));
+            } else if (field.getType().getName().toString().equals("database.Classes.Employee") && value != null) {
+                Employee manager = (Employee) value;
+                attributes.put(fieldName, String.valueOf(manager.getOID()));
+            } else if(field.getType().getName().toString().equals("database.database.DataStructures.Date")){
+                Date date = (Date) value;
+                attributes.put(fieldName,date.toString() );
+            }else if (field.getType().getName().toString().equals("java.util.ArrayList")) {
+                ArrayList list = (ArrayList) value;
+                //attributes.put(fieldName,list);
             }
+
             System.out.println(value);
         }
+        attributes.put("oid", Integer.toString((Integer) databaseClass.getOID()));
 
     }
+
 public XMLWriter() {
 }
 

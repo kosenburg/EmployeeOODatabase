@@ -1,8 +1,13 @@
 package database.Commands;
 
 import database.Classes.*;
+import database.utilities.UIController;
 import database.utilities.object_utilities.ClassesContainer;
+import database.utilities.xml_utilities.XMLReader;
+import database.utilities.xml_utilities.XMLWriter;
+import org.jdom2.JDOMException;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -12,34 +17,52 @@ import java.lang.reflect.Method;
 public class Set extends Select {
     private String[] attributes;
     private String type;
+    private UIController uicontroller;
+    private XMLReader reader;
+    private XMLWriter writer;
 
     public Set(String[] attributes, String expression) {
         super(expression);
         setType(expression);
+        try {
+            reader = new XMLReader(type);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         this.attributes = attributes;
     }
 
     @Override
     public void executeCommand() {
         System.out.println("Performing set operation...");
+        uicontroller.setTextArea("Performing set operation...");
         try {
+            super.setController(uicontroller);
             super.executeCommand();
             addAttributes();
         } catch (IllegalAccessException | InvocationTargetException e) {
+            uicontroller.setTextArea("An error occurred while setting a value due to: " + e.getMessage()+ "\n");
             System.out.println("An error occurred while setting a value due to: " + e.getMessage());
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void addAttributes() throws InvocationTargetException, IllegalAccessException {
+    private void addAttributes() throws InvocationTargetException, IllegalAccessException, JDOMException, IOException {
         for (DatabaseClass databaseClass: classes) {
             for (String pair: attributes) {
+                reader.remove(databaseClass,type);
                 String[] temp = pair.split("=");
                 Method method = getMethod(temp[0], databaseClass);
 
                 //System.out.println("Invoking " + method.getName() + " with " + temp[1] + " as argument.");
                 perform(method,databaseClass,temp);
                 //System.out.println();
+                writer = new XMLWriter(databaseClass);
             }
+            writer.run();
         }
 
     }
@@ -75,6 +98,7 @@ public class Set extends Select {
                 }
             }
         } catch (NoSuchMethodException e) {
+            uicontroller.setTextArea("The method " + methodName + " does not exist for the class " + dbClass.getClass().getName() + "\n");
             System.err.println("The method " + methodName + " does not exist for the class " + dbClass.getClass().getName());
         }
         return null;
@@ -87,10 +111,16 @@ public class Set extends Select {
 
     @Override
     public void returnResults() {
+        uicontroller.setTextArea("Attribute set successfully!");
         System.out.println("Attribute set successfully.");
     }
 
     private void setType(String expression) {
         this.type = expression.split("\\.")[0].trim();
+    }
+
+    @Override
+    public void setController(UIController controller) {
+        this.uicontroller = controller;
     }
 }
